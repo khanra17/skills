@@ -84,6 +84,6 @@ Off the main flow entirely.
 - **`/teach`**: learn a concept over multiple sessions, using the current directory as a stateful workspace.
 - **`/writing-for-agents`** is the reference for writing documents agents consume: skills, AGENTS.md, pointed-at docs.
 
-## Precondition
+## Project setup
 
 **`/setup-khanra17-skills`**: run before your first engineering flow to configure the issue tracker, triage labels, and doc layout. It also drafts stack-aware `AGENTS.md` guidance in a consistent structure, with scoped and verification references only where useful, using `/writing-for-agents`. Custom issue trackers also work. You can configure just one section later without redoing the rest.

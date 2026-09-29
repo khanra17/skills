@@ -35,7 +35,7 @@ Four **state** roles:
 
 Every open, evaluated issue should carry exactly one category role and one state role. If state roles conflict, flag it and ask the maintainer before doing anything else.
 
-These are canonical role names. The actual label strings used in the issue tracker may differ. The mapping should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`.
+These are canonical role names. The actual label strings used in the issue tracker may differ. The mapping should have been provided to you. If not, tell the user to run `/setup-khanra17-skills`.
 
 State transitions: move an evaluated issue to `needs-info`, `ready-for-implementation`, or `suspended`; use `needs-triage` while evaluation is unfinished. Re-evaluate `needs-info` once the missing information arrives. The maintainer can override at any time.
 
