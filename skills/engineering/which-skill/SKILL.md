@@ -35,9 +35,9 @@ The limit on this is the **[smart zone](../../../docs/engineering/which-skill.md
 
 A starting situation that generates work, then merges onto the main flow.
 
-- **Bugs and requests piling up** → **`/triage`**. It moves issues through triage roles and produces agent-ready issues, which **`/implement`** later picks up.
+- **Bugs and requests piling up** → **`/triage`**. It evaluates requests and marks complete ones `ready-for-implementation`; you or an agent can implement them later.
 
-  Triage is only for issues **you didn't create**: bug reports, incoming feature requests, anything that arrives raw. Tickets that `/to-tickets` produced are already agent-ready, so **don't triage them**.
+  Triage is for incomplete requests, including your own. Tickets that `/to-tickets` produced are already triaged, so **don't triage them again**.
 
 - **Something's broken** → **`/diagnosing-bugs`**. For the hard ones: the bug that resists a first glance, the intermittent flake, the regression that crept in between two known-good states. It refuses to theorise until it has a **tight feedback loop** (one command that already goes red on *this* bug), then fixes with a regression test. Its post-mortem hands off to **`/improve-codebase-architecture`** when the real finding is that there's no good seam to lock the bug down.
 
