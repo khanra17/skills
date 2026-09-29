@@ -172,6 +172,7 @@ Skills I use daily for code work.
 **Model-invoked**
 
 - **[git-commit](./skills/engineering/git-commit/SKILL.md)**: Make coherent commits with a fixed type-to-emoji convention, including final squash messages. [Docs](./docs/engineering/git-commit.md)
+- **[github-project](./skills/engineering/github-project/SKILL.md)**: Maintain an opted-in delivery board without replacing issue triage or planning. [Docs](./docs/engineering/github-project.md)
 - **[prototype](./skills/engineering/prototype/SKILL.md)**: Build a throwaway prototype to answer a design question, either a single shareable HTML file for state/logic questions, or several radically different UI variations toggleable from one route. [Docs](./docs/engineering/prototype.md)
 - **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**: Disciplined diagnosis loop for hard bugs and performance regressions: build a feedback loop that goes red on this bug → minimise → hypothesise → instrument → fix → regression-test. [Docs](./docs/engineering/diagnosing-bugs.md)
 - **[research](./skills/engineering/research/SKILL.md)**: Investigate a question against high-trust primary sources and capture the findings as a cited Markdown file in the repo, run as a background agent. [Docs](./docs/engineering/research.md)

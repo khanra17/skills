@@ -6,6 +6,7 @@
 - The repository's label names for the four canonical triage states, when `triage` is installed.
 - How skills should find and consume glossaries and ADRs.
 - Repository commit choices for [git-commit](./git-commit.md).
+- An optional delivery-board configuration for [github-project](./github-project.md).
 - Project-specific `AGENTS.md` guidance and relevant verification context, adapted to the actual stack.
 
 After exploring the repository, it shows drafts for approval, updates the root `AGENTS.md`, and writes the relevant files under `docs/agents/`.
@@ -42,7 +43,9 @@ When git-commit is installed, setup asks whether to use the standard Gitmoji + C
 
 **Do I need a GitHub Project?**
 
+No. The section is opt-in for delivery tracking, usually on larger or client projects. Issues-only projects create no board configuration. When chosen, setup agrees on item scope, fields, completion criteria, and automation before making local or remote changes. The reusable rules stay in the skill; `docs/agents/github-project.md` records this project's choices.
 
+See [github-project](./github-project.md) for the recommended board and its relationship to triage. Setup checks access separately for the board and private repository items, and reports any UI-only or permission-blocked steps as pending.
 
 **Does setup configure pull-request triage?**
 
@@ -73,6 +76,7 @@ Single-context is the default. It offers a multi-context `GLOSSARY-MAP.md` layou
 - The tracker guide contains commands or instructions that match the chosen tracker.
 - Triage labels are included only when triage is installed.
 - Commit choices agree with existing repository validation without duplicating the shared emoji table.
+- A Project is configured only by choice, with clear completion criteria and no competing automation.
 - A collection marked ready has a working connection, verified source revisions and versions, and checked index coverage.
 - Existing surrounding `AGENTS.md` content is preserved.
 - Later engineering skills can use the configuration without asking where issues or domain docs live.

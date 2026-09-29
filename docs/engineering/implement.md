@@ -36,7 +36,7 @@ For visible UI changes, it inspects the running result with representative seede
 
 **Does it close the tracker ticket?**
 
-No. It commits the implementation. Closing the issue still needs a separate instruction. A commit does not prove deployment or client acceptance.
+No. It commits the implementation and, when a Project is configured, updates the delivery stage according to that board's completion criteria. Closing the issue still needs a separate instruction. A commit does not prove deployment or client acceptance.
 
 ## It's working if
 
@@ -48,3 +48,4 @@ No. It commits the implementation. Closing the issue still needs a separate inst
 - Review receives the same requirements and task scope used for implementation.
 - Review-driven fixes are checked again before the final commit.
 - Commits follow the selected convention without including unrelated staging.
+- Optional board updates reflect actual progress rather than assuming every commit means Done.

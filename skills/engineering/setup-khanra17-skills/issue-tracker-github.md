@@ -21,6 +21,10 @@ Create a GitHub issue.
 
 Run `gh issue view <number> --comments`.
 
+## GitHub Project (when configured)
+
+If `docs/agents/github-project.md` exists, call the Skill tool with "github-project" after a batch of issue publications or lifecycle changes. Pass the affected issues and actual outcome, including close reasons or reopening. It handles membership and delivery fields without changing the issue content, triage labels, or relationships. With no Project configuration, skip board work.
+
 ## Wayfinding operations
 
 Used by `/wayfinder`. The **map** is a single issue with **child** issues as tickets.

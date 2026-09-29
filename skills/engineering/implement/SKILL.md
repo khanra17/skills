@@ -8,6 +8,8 @@ Implement the work described by the user in the spec or tickets.
 
 Before editing, capture the starting commit (`git rev-parse HEAD`) and note existing changes.
 
+When `docs/agents/github-project.md` exists and this work has an issue, call the Skill tool with "github-project" to reflect that implementation has started.
+
 Use /tdd where possible, at pre-agreed seams.
 
 Run typechecking regularly, single test files regularly, and the full test suite once at the end.
@@ -20,3 +22,4 @@ Once done, use /code-review in working-tree mode, passing the starting commit, s
 
 Call the Skill tool with "git-commit" to commit your work to the current branch.
 
+When this work has an issue and a configured Project, call the Skill tool with "github-project", passing the issue and verified outcome. Let its completion criteria determine the board stage; a commit alone need not mean Done.
