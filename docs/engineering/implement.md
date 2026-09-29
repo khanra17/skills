@@ -47,3 +47,4 @@ No. It commits the implementation. Closing the issue still needs a separate inst
 - Verification gaps are reported explicitly.
 - Review receives the same requirements and task scope used for implementation.
 - Review-driven fixes are checked again before the final commit.
+- Commits follow the selected convention without including unrelated staging.

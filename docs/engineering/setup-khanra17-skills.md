@@ -5,6 +5,7 @@
 - Where issues live: GitHub, local Markdown, or another tracker described by the user.
 - The repository's label names for the four canonical triage states, when `triage` is installed.
 - How skills should find and consume glossaries and ADRs.
+- Repository commit choices for [git-commit](./git-commit.md).
 - Project-specific `AGENTS.md` guidance and relevant verification context, adapted to the actual stack.
 
 After exploring the repository, it shows drafts for approval, updates the root `AGENTS.md`, and writes the relevant files under `docs/agents/`.
@@ -37,6 +38,7 @@ Yes. For GitHub, it records applicable issue-form requirements, extra required l
 
 **How are commit conventions chosen?**
 
+When git-commit is installed, setup asks whether to use the standard Gitmoji + Conventional Commits format. The fixed emoji mapping stays in the skill; `docs/agents/git-commit.md` records the choice and any repository overrides, scope restrictions, or existing validator/template paths. Setup does not install hooks or dependencies.
 
 **Do I need a GitHub Project?**
 
@@ -70,6 +72,7 @@ Single-context is the default. It offers a multi-context `GLOSSARY-MAP.md` layou
 - Its rules capture consequential constraints rather than obvious advice, duplicated code facts, or speculative policies.
 - The tracker guide contains commands or instructions that match the chosen tracker.
 - Triage labels are included only when triage is installed.
+- Commit choices agree with existing repository validation without duplicating the shared emoji table.
 - A collection marked ready has a working connection, verified source revisions and versions, and checked index coverage.
 - Existing surrounding `AGENTS.md` content is preserved.
 - Later engineering skills can use the configuration without asking where issues or domain docs live.

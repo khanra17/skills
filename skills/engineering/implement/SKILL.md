@@ -18,5 +18,5 @@ For visible UI changes, inspect the running result with representative seeded or
 
 Once done, use /code-review in working-tree mode, passing the starting commit, spec/ticket or agreed requirements, and this task's changes—not unrelated existing work. Rerun affected checks after review-driven fixes.
 
-Commit your work to the current branch.
+Call the Skill tool with "git-commit" to commit your work to the current branch.
 
