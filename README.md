@@ -194,6 +194,7 @@ General workflow tools, not code-specific.
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)**: Get relentlessly interviewed about a plan or design until every branch of the design tree is resolved. [Docs](./docs/productivity/grill-me.md)
 - **[handoff](./skills/productivity/handoff/SKILL.md)**: Compact the current conversation into a handoff document so another agent can continue the work. [Docs](./docs/productivity/handoff.md)
 - **[i-have-adhd](./skills/productivity/i-have-adhd/SKILL.md)**: Use clear steps, focused answers, and useful progress reminders for the rest of the session, until you turn the mode off. [Docs](./docs/productivity/i-have-adhd.md)
+- **[reflect](./skills/productivity/reflect/SKILL.md)**: Review a session for lasting lessons and propose instruction or documentation changes for your approval. [Docs](./docs/productivity/reflect.md)
 - **[teach](./skills/productivity/teach/SKILL.md)**: Explain a concept plainly or teach a topic over several sessions with practical lessons and a learning record. [Docs](./docs/productivity/teach.md)
 - **[wait-what](./skills/productivity/wait-what/SKILL.md)**: Fire this the moment a message doesn't land. The agent re-pitches it with the context you're missing, in plain English, using `GLOSSARY.md` vocabulary when available. [Docs](./docs/productivity/wait-what.md)
 
