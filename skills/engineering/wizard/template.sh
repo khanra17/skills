@@ -74,38 +74,72 @@ open_url() {
   } >/dev/null 2>&1 || warn "couldn't open a browser, so visit it manually: $url"
 }
 
+_input_ended() {
+  printf '\n  Input ended; stopping.\n' >&2
+  exit 1
+}
+
 # pause "msg" waits for the human to confirm they've done the manual part.
 pause() {
   printf '  %s%s%s ' "$DIM" "${1:-Press Enter to continue}" "$RESET"
-  read -r _ || true
+  read -r _ || _input_ended
 }
 
 # confirm "question" is a y/N gate; returns success on yes.
 confirm() {
   local reply=""
   printf '  %s? %s [y/N] ' "$YELLOW" "$1"
-  read -r reply || true
+  read -r reply || _input_ended
   [[ "$reply" =~ ^[Yy] ]]
 }
 
-# _existing KEY: current value of KEY in ENV_FILE, if any.
+# _existing KEY: decode a single-line dotenv literal without executing it.
+# Missing keys return an empty value; unsupported quoting/escapes fail.
 _existing() {
-  [[ -f "$ENV_FILE" ]] || return 1
-  local line; line=$(grep -E "^${1}=" "$ENV_FILE" | tail -n1) || return 1
-  printf '%s' "${line#*=}"
+  [[ -f "$ENV_FILE" ]] || return 0
+  local lines value quote pattern status
+  lines=$(grep -E "^[[:blank:]]*(export[[:blank:]]+)?${1}[[:blank:]]*=" "$ENV_FILE") || {
+    status=$?
+    [[ "$status" -eq 1 ]] && return 0
+    return "$status"
+  }
+  value=${lines##*$'\n'}
+  value=${value#*=}
+  value=${value%$'\r'}
+  value=${value#"${value%%[![:blank:]]*}"}
+  case "$value" in
+    \"*|\'*)
+      quote=${value:0:1}
+      pattern="^${quote}([^${quote}]*)${quote}[[:blank:]]*(#.*)?$"
+      if [[ ! "$value" =~ $pattern ]]; then
+        printf '  Unsupported dotenv quoting for %s.\n' "$1" >&2
+        return 1
+      fi
+      value=${BASH_REMATCH[1]}
+      if [[ "$quote" == '"' && "$value" == *\\* ]]; then
+        printf '  Escaped dotenv values need the project env tooling: %s.\n' "$1" >&2
+        return 1
+      fi
+      ;;
+    *)
+      value=${value%%#*}
+      value=${value%"${value##*[![:blank:]]}"}
+      ;;
+  esac
+  printf '%s' "$value"
 }
 
 # ask KEY "Prompt" reads a value into $KEY. Offers the existing .env value as
 # a default on re-runs (Enter keeps it). Visible input (non-secret).
 ask() {
   local key="$1" prompt="$2" current input
-  current=$(_existing "$key" || true)
+  current=$(_existing "$key") || return
   if [[ -n "$current" ]]; then
     printf '  %s%s%s %s[Enter keeps current]%s ' "$BOLD" "$prompt" "$RESET" "$DIM" "$RESET"
   else
     printf '  %s%s%s ' "$BOLD" "$prompt" "$RESET"
   fi
-  read -r input || true
+  IFS= read -r input || _input_ended
   [[ -z "$input" && -n "$current" ]] && input="$current"
   printf -v "$key" '%s' "$input"
 }
@@ -113,26 +147,41 @@ ask() {
 # ask_secret KEY "Prompt" is like ask, but input is hidden.
 ask_secret() {
   local key="$1" prompt="$2" current input
-  current=$(_existing "$key" || true)
+  current=$(_existing "$key") || return
   if [[ -n "$current" ]]; then
     printf '  %s%s%s %s[Enter keeps current]%s ' "$BOLD" "$prompt" "$RESET" "$DIM" "$RESET"
   else
     printf '  %s%s%s ' "$BOLD" "$prompt" "$RESET"
   fi
-  read -rs input || true
+  IFS= read -rs input || _input_ended
   printf '\n'
   [[ -z "$input" && -n "$current" ]] && input="$current"
   printf -v "$key" '%s' "$input"
 }
 
-# write_env KEY VALUE upserts KEY=VALUE into ENV_FILE (creates it; replaces
-# any existing line). Idempotent.
+# write_env KEY VALUE upserts a single-line literal, quoting when needed.
 write_env() {
-  local key="$1" value="$2" tmp
+  local key="$1" value="$2" tmp encoded status
+  if [[ "$value" == *$'\n'* || "$value" == *$'\r'* ]]; then
+    printf '  Multiline dotenv values need the project env tooling: %s.\n' "$key" >&2
+    return 1
+  elif [[ "$value" =~ ^[a-zA-Z0-9_./:@%+=,-]*$ ]]; then
+    encoded=$value
+  elif [[ "$value" != *\'* ]]; then
+    encoded="'$value'"
+  elif [[ "$value" != *\"* && "$value" != *\\* ]]; then
+    encoded="\"$value\""
+  else
+    printf '  Cannot quote %s as a dotenv literal; use the project env tooling.\n' "$key" >&2
+    return 1
+  fi
   touch "$ENV_FILE"
   tmp=$(mktemp)
-  grep -vE "^${key}=" "$ENV_FILE" > "$tmp" || true
-  printf '%s=%s\n' "$key" "$value" >> "$tmp"
+  grep -vE "^[[:blank:]]*(export[[:blank:]]+)?${key}[[:blank:]]*=" "$ENV_FILE" > "$tmp" || {
+    status=$?
+    if [[ "$status" -ne 1 ]]; then rm -f "$tmp"; return "$status"; fi
+  }
+  printf '%s=%s\n' "$key" "$encoded" >> "$tmp"
   mv "$tmp" "$ENV_FILE"
   WRITTEN_ENV+=("$key")
   printf '  %s✓ wrote%s %s → %s\n' "$GREEN" "$RESET" "$key" "$ENV_FILE"
