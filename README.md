@@ -178,7 +178,7 @@ Skills I use daily for code work.
 - **[glossary](./skills/engineering/glossary/SKILL.md)**: Build and sharpen the project's domain language, maintaining `GLOSSARY.md` and `GLOSSARY-MAP.md`. [Docs](./docs/engineering/glossary.md)
 - **[adr](./skills/engineering/adr/SKILL.md)**: Record and revise significant architectural decisions in ADRs. [Docs](./docs/engineering/adr.md)
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: Shared discipline and vocabulary for designing deep modules: a lot of behaviour behind a small interface, placed at a clean seam, testable through that interface. [Docs](./docs/engineering/codebase-design.md)
-- **[code-review](./skills/engineering/code-review/SKILL.md)**: Two-axis review of the diff since a fixed point: **Standards** (does it follow the repo's coding standards, plus a Fowler smell baseline?) and **Spec** (does it faithfully implement the originating issue/spec?), run as parallel sub-agents so neither pollutes the other. [Docs](./docs/engineering/code-review.md)
+- **[code-review](./skills/engineering/code-review/SKILL.md)**: Two-axis review of committed or work-in-progress changes since a fixed point: **Standards** (repo standards plus a Fowler smell baseline) and **Spec** (the agreed requirements), run as parallel sub-agents so neither pollutes the other. [Docs](./docs/engineering/code-review.md)
 - **[wizard](./skills/engineering/wizard/SKILL.md)**: Generate an interactive bash wizard that walks a human through steps only they can perform: provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. [Docs](./docs/engineering/wizard.md)
 
 ### Productivity
