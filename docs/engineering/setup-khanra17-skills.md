@@ -5,6 +5,7 @@
 - Where issues live: GitHub, local Markdown, or another tracker described by the user.
 - The repository's label names for the four canonical triage states, when `triage` is installed.
 - How skills should find and consume glossaries and ADRs.
+- Optionally, which reference indexes this project should use for [reference-codebases](./reference-codebases.md).
 - Repository commit choices for [git-commit](./git-commit.md).
 - An optional delivery-board configuration for [github-project](./github-project.md).
 - Project-specific `AGENTS.md` guidance and relevant verification context, adapted to the actual stack.
@@ -57,9 +58,13 @@ Only when the `triage` skill is installed beside setup or appears in the availab
 
 **Will it install an MCP server and clone repositories on every setup run?**
 
+No. Reference setup is opt-in, offered when reference-codebases is installed or explicitly requested. Deferring leaves existing settings alone. Choosing it starts with existing collections, then asks approval for any preparation or changes.
 
+**How does reference setup work?**
 
+It reuses suitable Codebase Memory MCP collections, shortlists sources for missing coverage, and verifies whole-collection indexing. Repositories and indexes stay outside the project. The reference-codebases skill selects relevant indexes from MCP's listing.
 
+See [reference-codebases](./reference-codebases.md) for selection and update rules. Both entry points use the same preparation guide; reference-only setup leaves tracker and domain configuration alone.
 
 **Does setup create `GLOSSARY.md` or an ADR directory?**
 
@@ -77,6 +82,7 @@ Single-context is the default. It offers a multi-context `GLOSSARY-MAP.md` layou
 - Triage labels are included only when triage is installed.
 - Commit choices agree with existing repository validation without duplicating the shared emoji table.
 - A Project is configured only by choice, with clear completion criteria and no competing automation.
+- Reference setup runs only when chosen and leaves disposable reference checkouts and caches outside the project.
 - A collection marked ready has a working connection, verified source revisions and versions, and checked index coverage.
 - Existing surrounding `AGENTS.md` content is preserved.
 - Later engineering skills can use the configuration without asking where issues or domain docs live.

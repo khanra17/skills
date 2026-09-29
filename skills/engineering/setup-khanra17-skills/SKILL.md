@@ -11,6 +11,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Issue tracker**: where issues live (GitHub by default; local markdown is also supported out of the box)
 - **Triage labels**: the strings used for the four canonical triage states
 - **Domain docs**: where `GLOSSARY.md` and ADRs live, and the consumer rules for reading them
+- **Reference codebases** (opt-in): prepare external collections for `/reference-codebases` and optionally save this project's index selection
 - **Commit conventions**: repository choices for `/git-commit`
 - **GitHub Project** (opt-in): delivery-board configuration for `/github-project`
 - **Project guidance**: concise, stack-aware `AGENTS.md` and relevant verification context
@@ -32,6 +33,7 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `docs/agents/`: does this skill's prior output already exist?
 - `.scratch/`: a sign that a local-markdown issue tracker convention is already in use
 - Is the `triage` skill installed? (a `triage` skill folder alongside this one, or `triage` in your available skills.) This decides whether Section B runs at all.
+- Is `reference-codebases` installed? Offer Section D only if it is, or reference setup was explicitly requested.
 - Are `git-commit` and `github-project` installed alongside setup or available in the session? This gates Sections E and F.
 - Existing commit conventions, templates, validators, and recent commit subjects.
 - For GitHub: issue forms, additional required labels, any label-source/sync files, and an existing Project configuration.
@@ -67,7 +69,9 @@ The four canonical states are `needs-triage`, `needs-info`, `ready-for-implement
 
 Offer **multi-context** (a root `GLOSSARY-MAP.md` pointing to per-context `GLOSSARY.md` files) only when exploration found monorepo signals. Then confirm which layout they want.
 
+**Section D: Reference codebases (opt-in).** Unless already requested, offer to prepare collections now or defer until there's something to study (recommended). Deferring leaves existing settings alone and creates no files.
 
+If chosen, follow [reference-codebases.md](./reference-codebases.md) for collection preparation and an optional project index selection. That guide owns reference setup; steps 3–5 below cover the other sections.
 
 **Section E: Commit conventions.** Run when `git-commit` is installed. Ask:
 
