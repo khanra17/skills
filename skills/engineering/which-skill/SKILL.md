@@ -57,7 +57,7 @@ Model-invoked skills for domain language, architecture vocabulary, and decision 
 
 - **`/glossary`**: sharpen the project's *domain* language: challenge a fuzzy term, resolve an overloaded word ("account" doing three jobs), and maintain `GLOSSARY.md` and `GLOSSARY-MAP.md`.
 - **`/adr`**: record a significant architectural decision or revise an existing ADR.
-- **`/codebase-design`** is the deep-module vocabulary (module, interface, depth, seam, adapter, leverage, locality) for designing a module's *shape*: a lot of behaviour behind a small interface at a clean seam. `/tdd` and `/improve-codebase-architecture` both speak it.
+- **`/codebase-design`** is the deep-module vocabulary (module, interface, depth, seam, adapter, leverage, locality) for designing a module's *shape*: a lot of behaviour behind a small interface at a clean seam. It also covers explicit states and transitions when event ordering affects correctness. `/tdd` and `/improve-codebase-architecture` both speak it.
 
 ## Phase boundaries
 
