@@ -4,4 +4,4 @@ description: A relentless interview to sharpen a plan or design, which also crea
 disable-model-invocation: true
 ---
 
-Call the Skill tool twice, for "grilling" and "domain-modeling".
+Call the Skill tool for "grilling". Use "glossary" when resolving domain terms and "adr" when recording architectural decisions.

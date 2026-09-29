@@ -160,7 +160,7 @@ Skills I use daily for code work.
 **User-invoked**
 
 - **[which-skill](./skills/engineering/which-skill/SKILL.md)**: Ask which skill or flow fits your situation. A router over the skills in this repo. [Docs](./docs/engineering/which-skill.md)
-- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: Grilling session that also builds your project's domain model, sharpening terminology and updating `CONTEXT.md` and ADRs inline. [Docs](./docs/engineering/grill-with-docs.md)
+- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: Grilling session that also builds your project's domain model, sharpening terminology and updating `GLOSSARY.md` and ADRs inline. [Docs](./docs/engineering/grill-with-docs.md)
 - **[triage](./skills/engineering/triage/SKILL.md)**: Move issues through a state machine of triage roles. [Docs](./docs/engineering/triage.md)
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick. [Docs](./docs/engineering/improve-codebase-architecture.md)
 - **[setup-matt-pocock-skills](./skills/engineering/setup-matt-pocock-skills/SKILL.md)**: Configure this repo for the engineering skills (issue tracker, triage labels, domain doc layout). Run once per repo before using the other engineering skills. [Docs](./docs/engineering/setup-matt-pocock-skills.md)
@@ -175,7 +175,8 @@ Skills I use daily for code work.
 - **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**: Disciplined diagnosis loop for hard bugs and performance regressions: build a feedback loop that goes red on this bug → minimise → hypothesise → instrument → fix → regression-test. [Docs](./docs/engineering/diagnosing-bugs.md)
 - **[research](./skills/engineering/research/SKILL.md)**: Investigate a question against high-trust primary sources and capture the findings as a cited Markdown file in the repo, run as a background agent. [Docs](./docs/engineering/research.md)
 - **[tdd](./skills/engineering/tdd/SKILL.md)**: Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time. [Docs](./docs/engineering/tdd.md)
-- **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**: Actively build and sharpen a project's domain model: challenge terms against the glossary, stress-test with edge-case scenarios, and update `CONTEXT.md` and ADRs inline. [Docs](./docs/engineering/domain-modeling.md)
+- **[glossary](./skills/engineering/glossary/SKILL.md)**: Build and sharpen the project's domain language, maintaining `GLOSSARY.md` and `GLOSSARY-MAP.md`. [Docs](./docs/engineering/glossary.md)
+- **[adr](./skills/engineering/adr/SKILL.md)**: Record and revise significant architectural decisions in ADRs. [Docs](./docs/engineering/adr.md)
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: Shared discipline and vocabulary for designing deep modules: a lot of behaviour behind a small interface, placed at a clean seam, testable through that interface. [Docs](./docs/engineering/codebase-design.md)
 - **[code-review](./skills/engineering/code-review/SKILL.md)**: Two-axis review of the diff since a fixed point: **Standards** (does it follow the repo's coding standards, plus a Fowler smell baseline?) and **Spec** (does it faithfully implement the originating issue/spec?), run as parallel sub-agents so neither pollutes the other. [Docs](./docs/engineering/code-review.md)
 - **[wizard](./skills/engineering/wizard/SKILL.md)**: Generate an interactive bash wizard that walks a human through steps only they can perform: provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. [Docs](./docs/engineering/wizard.md)
@@ -189,7 +190,7 @@ General workflow tools, not code-specific.
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)**: Get relentlessly interviewed about a plan or design until every branch of the design tree is resolved. [Docs](./docs/productivity/grill-me.md)
 - **[handoff](./skills/productivity/handoff/SKILL.md)**: Compact the current conversation into a handoff document so another agent can continue the work. [Docs](./docs/productivity/handoff.md)
 - **[teach](./skills/productivity/teach/SKILL.md)**: Teach the user a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace. [Docs](./docs/productivity/teach.md)
-- **[wait-what](./skills/productivity/wait-what/SKILL.md)**: Fire this the moment a message doesn't land. The agent re-pitches it with the context you're missing, in plain English, using your `CONTEXT.md` vocabulary. [Docs](./docs/productivity/wait-what.md)
+- **[wait-what](./skills/productivity/wait-what/SKILL.md)**: Fire this the moment a message doesn't land. The agent re-pitches it with the context you're missing, in plain English, using `GLOSSARY.md` vocabulary when available. [Docs](./docs/productivity/wait-what.md)
 
 **Model-invoked**
 
