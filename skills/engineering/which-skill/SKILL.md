@@ -35,7 +35,7 @@ The limit on this is the **[smart zone](../../../docs/engineering/which-skill.md
 
 A starting situation that generates work, then merges onto the main flow.
 
-- **Bugs and requests piling up** → **`/triage`**. It evaluates requests and marks complete ones `ready-for-implementation`; you or an agent can implement them later.
+- **Bugs and requests piling up** → **`/triage`**. It evaluates requests and marks fully specified ones `ready-for-implementation`; you or an agent can implement them later. Rejected requests close as not planned.
 
   Triage is for incomplete requests, including your own. Tickets that `/to-tickets` produced are already triaged, so **don't triage them again**.
 

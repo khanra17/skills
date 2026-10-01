@@ -34,7 +34,7 @@ The skill removes the triage-state label, points to the existing behavior, and c
 
 **What happens to rejected enhancements?**
 
-A durable explanation is written or appended under `.out-of-scope/`, linked from the issue, and the issue closes as `suspended`. Rejected bugs receive an explanation but do not enter that knowledge base.
+A durable explanation is written or appended under `.out-of-scope/` and linked from the issue. The issue retains the `suspended` label and closes as not planned, not completed. Rejected bugs close the same way after an explanation but do not enter that knowledge base.
 
 **Can I force a state change without a full interview?**
 

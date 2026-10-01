@@ -72,7 +72,7 @@ Show counts and a one-line summary per item. Let the maintainer pick.
    - **Already implemented**: remove the triage-state label, point to the existing behavior, and close as completed. No implementation brief or `.out-of-scope/` entry is needed.
    - `ready-for-implementation`: post an implementation brief ([AGENT-BRIEF.md](AGENT-BRIEF.md)), including any manual steps or access requirements.
    - `needs-info`: post triage notes (template below).
-   - For `suspended`, close the issue with the reason:
+   - For `suspended`, close as not planned with an explanation:
      - **Bug**: give a polite explanation, then close.
      - **Enhancement**: write to `.out-of-scope/`, link to it from a comment, then close ([OUT-OF-SCOPE.md](OUT-OF-SCOPE.md)).
    - `needs-triage`: apply the role. Optional comment if there's partial progress.
