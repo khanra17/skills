@@ -1,6 +1,6 @@
 # MISSION.md Format
 
-`MISSION.md` lives at the workspace root. It captures the _reason_ the user is learning this topic. Every teaching decision (what to teach next, which resources to surface, which exercises to design) should trace back to this document.
+`MISSION.md` lives at the chosen teaching workspace root. It captures the _reason_ the user is learning this topic. Every teaching decision (what to teach next, which resources to surface, which exercises to design) should trace back to this document.
 
 ## Template
 
@@ -15,6 +15,9 @@
 - {Another specific thing}
 - {…}
 
+## Starting point
+{What the user already knows or can do, and the gaps relevant to this goal. Distinguish stated experience from demonstrated ability.}
+
 ## Constraints
 - {Time, budget, prior commitments, learning preferences, anything that bounds the approach}
 
@@ -26,6 +29,6 @@
 
 - **One mission per workspace.** If the user wants to learn two unrelated things, that is two workspaces.
 - **Concrete over abstract.** "Run a half marathon by October" beats "get fitter." "Ship a Rust CLI to my team" beats "learn Rust."
-- **Push back on vagueness.** If the user cannot articulate why, interview them before writing anything. A bad mission is worse than no mission.
-- **Revise when reality shifts.** Missions change. When the user's goal moves, update this file: don't leave a stale mission steering future sessions.
+- **Resolve missing context.** Use what the conversation already establishes. Ask about the goal or starting point only where it is still unclear.
+- **Revise when reality shifts.** Missions change. When the user's goal moves, confirm the change with them and update this file: don't leave a stale mission steering future sessions.
 - **Keep it short.** If `MISSION.md` runs past a screen, it has stopped being a compass and started being a plan.
