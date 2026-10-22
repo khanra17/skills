@@ -1,6 +1,6 @@
 ---
 name: setup-khanra17-skills
-description: "Set up project-specific agent instructions and engineering workflow configuration, including repository guidance and selected workflow sections."
+description: "Set up project-specific agent instructions and engineering workflow configuration, including optional Projects and reference collections."
 disable-model-invocation: true
 ---
 
@@ -13,6 +13,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Domain docs**: where `GLOSSARY.md` and ADRs live, and the consumer rules for reading them
 - **Reference codebases** (opt-in): prepare external collections for `/reference-codebases` and optionally save this project's index selection
 - **Commit conventions**: repository choices for `/git-commit`
+- **GitHub Project** (opt-in): delivery-board configuration for `/github-project`
 - **Project guidance**: concise, stack-aware `AGENTS.md` and relevant verification context
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
@@ -33,9 +34,9 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `.scratch/`: a sign that a local-markdown issue tracker convention is already in use
 - Is the `triage` skill installed? (a `triage` skill folder alongside this one, or `triage` in your available skills.) This decides whether Section B runs at all.
 - Is `reference-codebases` installed? Offer Section D only if it is, or reference setup was explicitly requested.
-- Is `git-commit` installed alongside setup or available in the session? This gates Section E.
+- Are `git-commit` and `github-project` installed alongside setup or available in the session? This gates Sections E and F.
 - Existing commit conventions, templates, validators, and recent commit subjects.
-- For GitHub: issue forms, additional required labels, any label-source/sync files.
+- For GitHub: issue forms, additional required labels, any label-source/sync files, and an existing Project configuration.
 - Monorepo signals: a `pnpm-workspace.yaml`, a `workspaces` field in `package.json`, or a populated `packages/*` with its own `src/`. These are present only in a genuinely large multi-package repo; their absence means single-context, which is almost every repo.
 
 ### 2. Present findings and ask
@@ -78,6 +79,10 @@ If chosen, follow [reference-codebases.md](./reference-codebases.md) for collect
 
 The standard format and fixed type-to-emoji mapping live in [git-commit](../git-commit/SKILL.md). On yes, record that choice in `docs/agents/git-commit.md` without copying the mapping. Collect only repository differences: scope restrictions, convention overrides, and paths to existing templates or validators. Use exploration to propose these rather than asking the user to enumerate discoverable settings. Reconcile any validator conflict before adopting a convention; do not install hooks or dependencies automatically. The chosen format also applies to final squash messages if the repo uses squash merges.
 
+**Section F: GitHub Project (opt-in).** Offer when the tracker is GitHub and `github-project` is installed, or the user explicitly requests Project setup. Recommend leaving it off for small or hobby projects; use it when delivery tracking warrants a board. A linked board alone does not authorize managing it.
+
+If chosen, read [github-project.md](./github-project.md) to propose the board setup and draft `docs/agents/github-project.md`. Include its remote changes in step 3; apply them only after approval.
+
 **Section G: Project agent instructions.** Include in full setup, or run on its own when requested. Read [agent-instructions.md](./agent-instructions.md) for the output structure, stack-specific discovery, and content boundaries. Draft project guidance from verified facts and agreed constraints, preserving existing instructions. Include scoped or verification references only where they earn their own file. Other targeted setup runs update their configuration pointers without rewriting project guidance.
 
 ### 3. Confirm and edit
@@ -87,6 +92,7 @@ Show drafts for the sections being configured:
 - The relevant `## Agent skills` block in `AGENTS.md` (see step 4)
 - The tracker and domain guides, and triage labels only when Section B ran
 - Commit choices only when Section E ran
+- Project configuration and proposed remote changes only when Section F ran
 - Root instructions and any scoped or verification guides only when Section G ran
 
 Let the user edit and approve the drafts before file writes or remote changes.
@@ -121,6 +127,8 @@ The block:
 Include the `### Triage labels` sub-block, and write `docs/agents/triage-labels.md`, only when `triage` is installed and Section B ran. When it isn't, both are omitted.
 
 When Section E runs, write the approved `docs/agents/git-commit.md` and add a `### Git commits` pointer: use `git-commit` for commits and squash messages; repository choices are in that file.
+
+When Section F runs, apply the approved Project plan and write `docs/agents/github-project.md`. Add a `### GitHub Project` pointer: use `github-project` for board operations; project choices are in that file. Ensure the tracker guide includes the conditional Project dispatch from [issue-tracker-github.md](./issue-tracker-github.md), preserving its existing conventions. Issues-only repositories need no Project configuration or pointer. For targeted setup, update only the relevant subsections.
 
 Then write the docs files using the seed templates in this skill folder as a starting point:
 

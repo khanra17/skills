@@ -7,13 +7,14 @@
 - How skills should find and consume glossaries and ADRs.
 - Optionally, which reference indexes this project should use for [reference-codebases](./reference-codebases.md).
 - Repository commit choices for [git-commit](./git-commit.md).
+- An optional delivery-board configuration for [github-project](./github-project.md).
 - Project-specific `AGENTS.md` guidance and relevant verification context, adapted to the actual stack.
 
 After exploring the repository, it shows drafts for approval, updates the root `AGENTS.md`, and writes the relevant files under `docs/agents/`.
 
 ## When to reach for it
 
-Run `/setup-khanra17-skills` once before the first engineering workflow in a repository. Run it again to change configuration. You can request a single section without redoing the rest.
+Run `/setup-khanra17-skills` once before the first engineering workflow in a repository. Run it again to change configuration or prepare references or a delivery board. You can request a single section, such as commit conventions or reference collections, without redoing the rest.
 
 Productivity skills do not require this setup.
 
@@ -40,6 +41,12 @@ Yes. For GitHub, it records applicable issue-form requirements, extra required l
 **How are commit conventions chosen?**
 
 When git-commit is installed, setup asks whether to use the standard Gitmoji + Conventional Commits format. The fixed emoji mapping stays in the skill; `docs/agents/git-commit.md` records the choice and any repository overrides, scope restrictions, or existing validator/template paths. Setup does not install hooks or dependencies.
+
+**Do I need a GitHub Project?**
+
+No. The section is opt-in for delivery tracking, usually on larger or client projects. Issues-only projects create no board configuration. When chosen, setup agrees on item scope, fields, completion criteria, and automation before making local or remote changes. The reusable rules stay in the skill; `docs/agents/github-project.md` records this project's choices.
+
+See [github-project](./github-project.md) for the recommended board and its relationship to triage. Setup checks access separately for the board and private repository items, and reports any UI-only or permission-blocked steps as pending.
 
 **Does setup configure pull-request triage?**
 
@@ -74,6 +81,7 @@ Single-context is the default. It offers a multi-context `GLOSSARY-MAP.md` layou
 - The tracker guide contains commands or instructions that match the chosen tracker.
 - Triage labels are included only when triage is installed.
 - Commit choices agree with existing repository validation without duplicating the shared emoji table.
+- A Project is configured only by choice, with clear completion criteria and no competing automation.
 - Reference setup runs only when chosen and leaves disposable reference checkouts and caches outside the project.
 - A collection marked ready has a working connection, verified source revisions and versions, and checked index coverage.
 - Existing surrounding `AGENTS.md` content is preserved.
