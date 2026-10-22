@@ -93,4 +93,4 @@ Off the main flow entirely.
 
 ## Project setup
 
-**`/setup-khanra17-skills`**: run before your first engineering flow to configure the issue tracker, triage labels, doc layout. It also drafts stack-aware `AGENTS.md` guidance in a consistent structure, with scoped and verification references only where useful, using `/writing-for-agents`. Custom issue trackers also work. You can configure just one section later without redoing the rest.
+**`/setup-khanra17-skills`**: run before your first engineering flow to configure the issue tracker, triage labels, doc layout, and commit conventions. It also drafts stack-aware `AGENTS.md` guidance in a consistent structure, with scoped and verification references only where useful, using `/writing-for-agents`. Custom issue trackers also work. You can configure just one section later without redoing the rest.

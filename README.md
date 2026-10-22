@@ -95,6 +95,8 @@ In your agent, run it once per repo. It will:
 
 - Offer optional reference collections for [reference-codebases](./docs/engineering/reference-codebases.md). You can defer this or request reference-only setup later.
 
+- Confirm the fixed Gitmoji + Conventional Commits convention, with repository-specific overrides
+
 ### 3. Bam - you're ready to go.
 
 ## Why These Skills Exist

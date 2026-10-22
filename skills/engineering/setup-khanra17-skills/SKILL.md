@@ -12,6 +12,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Triage labels**: the strings used for the four canonical triage states
 - **Domain docs**: where `GLOSSARY.md` and ADRs live, and the consumer rules for reading them
 - **Reference codebases** (opt-in): prepare external collections for `/reference-codebases` and optionally save this project's index selection
+- **Commit conventions**: repository choices for `/git-commit`
 - **Project guidance**: concise, stack-aware `AGENTS.md` and relevant verification context
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
@@ -32,6 +33,8 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `.scratch/`: a sign that a local-markdown issue tracker convention is already in use
 - Is the `triage` skill installed? (a `triage` skill folder alongside this one, or `triage` in your available skills.) This decides whether Section B runs at all.
 - Is `reference-codebases` installed? Offer Section D only if it is, or reference setup was explicitly requested.
+- Is `git-commit` installed alongside setup or available in the session? This gates Section E.
+- Existing commit conventions, templates, validators, and recent commit subjects.
 - For GitHub: issue forms, additional required labels, any label-source/sync files.
 - Monorepo signals: a `pnpm-workspace.yaml`, a `workspaces` field in `package.json`, or a populated `packages/*` with its own `src/`. These are present only in a genuinely large multi-package repo; their absence means single-context, which is almost every repo.
 
@@ -69,6 +72,12 @@ Offer **multi-context** (a root `GLOSSARY-MAP.md` pointing to per-context `GLOSS
 
 If chosen, follow [reference-codebases.md](./reference-codebases.md) for collection preparation and an optional project index selection. That guide owns reference setup; steps 3–5 below cover the other sections.
 
+**Section E: Commit conventions.** Run when `git-commit` is installed. Ask:
+
+> Use the standard Gitmoji + Conventional Commits convention? (recommended: **yes**, unless this repository has a different required convention)
+
+The standard format and fixed type-to-emoji mapping live in [git-commit](../git-commit/SKILL.md). On yes, record that choice in `docs/agents/git-commit.md` without copying the mapping. Collect only repository differences: scope restrictions, convention overrides, and paths to existing templates or validators. Use exploration to propose these rather than asking the user to enumerate discoverable settings. Reconcile any validator conflict before adopting a convention; do not install hooks or dependencies automatically. The chosen format also applies to final squash messages if the repo uses squash merges.
+
 **Section G: Project agent instructions.** Include in full setup, or run on its own when requested. Read [agent-instructions.md](./agent-instructions.md) for the output structure, stack-specific discovery, and content boundaries. Draft project guidance from verified facts and agreed constraints, preserving existing instructions. Include scoped or verification references only where they earn their own file. Other targeted setup runs update their configuration pointers without rewriting project guidance.
 
 ### 3. Confirm and edit
@@ -77,6 +86,7 @@ Show drafts for the sections being configured:
 
 - The relevant `## Agent skills` block in `AGENTS.md` (see step 4)
 - The tracker and domain guides, and triage labels only when Section B ran
+- Commit choices only when Section E ran
 - Root instructions and any scoped or verification guides only when Section G ran
 
 Let the user edit and approve the drafts before file writes or remote changes.
@@ -109,6 +119,8 @@ The block:
 ```
 
 Include the `### Triage labels` sub-block, and write `docs/agents/triage-labels.md`, only when `triage` is installed and Section B ran. When it isn't, both are omitted.
+
+When Section E runs, write the approved `docs/agents/git-commit.md` and add a `### Git commits` pointer: use `git-commit` for commits and squash messages; repository choices are in that file.
 
 Then write the docs files using the seed templates in this skill folder as a starting point:
 
