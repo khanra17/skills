@@ -27,6 +27,7 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `docs/agents/`: does this skill's prior output already exist?
 - `.scratch/`: a sign that a local-markdown issue tracker convention is already in use
 - Is the `triage` skill installed? (a `triage` skill folder alongside this one, or `triage` in your available skills.) This decides whether Section B runs at all.
+- For GitHub: issue forms, additional required labels, any label-source/sync files.
 - Monorepo signals: a `pnpm-workspace.yaml`, a `workspaces` field in `package.json`, or a populated `packages/*` with its own `src/`. These are present only in a genuinely large multi-package repo; their absence means single-context, which is almost every repo.
 
 ### 2. Present findings and ask
@@ -45,7 +46,7 @@ Default posture: these skills were designed for GitHub. If a `git remote` points
 - **Local markdown**: issues live as files under `.scratch/<feature>/` in this repo (good for solo projects or repos without a remote)
 - **Other** (Jira, Linear, etc.): ask the user to describe the workflow in one paragraph; the skill will record it as freeform prose
 
-Record the choice in `docs/agents/issue-tracker.md`.
+Record the choice in `docs/agents/issue-tracker.md`. For GitHub, also retain applicable issue-form requirements, extra label conventions, and existing label-source/sync paths. These supplement the spec and ticket formats; they do not replace them or introduce a new label taxonomy.
 
 **Section B: Triage label vocabulary.** Skip this section entirely if the `triage` skill isn't installed (exploration told you), since an uninstalled skill needs no labels.
 
