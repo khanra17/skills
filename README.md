@@ -12,92 +12,40 @@ These skills are designed to be small, easy to adapt, and composable. They work 
 
 ## Installation (30-second setup)
 
-A plugin updates itself. [skills.sh](https://skills.sh/mattpocock/skills) copies editable files into your project, and you update them by hand. Pick one per agent, because installing both gives you every skill twice.
+Use [skills.sh](https://skills.sh/khanra17/skills) with pi, Codex, Antigravity, or another supported agent. The installer lets you choose which skills and agents to install them on.
 
 ### 1. Get the skills
 
-<details>
-<summary><strong>Claude Code</strong></summary>
+**Productivity: install globally.**
 
 ```bash
-claude plugin install mattpocock-skills@claude-plugins-official
+npx skills@latest add khanra17/skills --global --skill grill-me grilling handoff i-have-adhd reflect teach unslop wait-what writing-for-agents
 ```
 
-Updates itself by default.
+For a project-specific copy, run the same command from the project without `--global`.
 
-</details>
-
-<details>
-<summary><strong>Codex</strong></summary>
+**Engineering: install per project.** Run these from the project directory:
 
 ```bash
-codex plugin marketplace add mattpocock/skills
-codex plugin add mattpocock-skills@mattpocock
+npx skills@latest add khanra17/skills/skills/engineering --skill '*'
+npx skills@latest add khanra17/skills --skill grilling unslop writing-for-agents
 ```
 
-Updates itself at startup.
+This installs the engineering set, including `setup-khanra17-skills` and `triage`. The second command installs the productivity companions: `grilling` for interviews, `unslop` for human-facing writing, and `writing-for-agents` for project instructions. Engineering flows do not depend on a global installation.
 
-</details>
-
-<details>
-<summary><strong>GitHub Copilot</strong> (CLI and VS Code)</summary>
-
-```bash
-copilot plugin marketplace add mattpocock/skills
-copilot plugin install mattpocock-skills@mattpocock
-```
-
-Then, once, add to `~/.copilot/settings.json`:
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "mattpocock": { "source": { "source": "github", "repo": "mattpocock/skills" }, "autoUpdate": true }
-  }
-}
-```
-
-In VS Code, run **Chat: Install Plugin From Source** and enter `https://github.com/mattpocock/skills`. It updates daily.
-
-</details>
-
-<details>
-<summary><strong>Gemini CLI</strong> (manual updates)</summary>
-
-```bash
-gemini skills install https://github.com/mattpocock/skills.git --path skills/engineering
-gemini skills install https://github.com/mattpocock/skills.git --path skills/productivity
-```
-
-Re-run both commands to update.
-
-</details>
-
-<details>
-<summary><strong>Any other agent, or editable files</strong> (manual updates)</summary>
-
-```bash
-npx skills@latest add mattpocock/skills -a <agent>  # cursor, opencode, devin, windsurf, amp, pi; omit -a to choose
-```
-
-When the installer asks which skills to take, include `setup-khanra17-skills`. To update, run `npx skills@latest update`, and re-run `add` to pick up new skills.
-
-</details>
+The installed files are yours to edit. Update when you want with `npx skills update`.
 
 ### 2. Run `/setup-khanra17-skills`
 
-In your agent, run it once per repo. It will:
+For engineering skills, run it once per repo. Productivity skills do not need project setup. It will:
 
-- Ask you which issue tracker you want to use (GitHub, GitLab, local files, or anything else you describe)
+- Ask you which issue tracker you want to use (GitHub, Linear, or local files)
 - Ask you what labels you apply to tickets when you triage them (`/triage` uses labels)
 - Set up the glossary and ADR consumer guide, confirming the layout for multi-context repos
 - Draft stack-aware `AGENTS.md` guidance in a consistent format, with your approval
-
-- Offer optional reference collections for [reference-codebases](./docs/engineering/reference-codebases.md). You can defer this or request reference-only setup later.
-
 - Confirm the fixed Gitmoji + Conventional Commits convention, with repository-specific overrides
-
 - Offer GitHub Projects for delivery tracking when needed, without requiring a board for small projects
+- Offer optional reference collections for [reference-codebases](./docs/engineering/reference-codebases.md). You can defer this or request reference-only setup later.
 
 ### 3. Bam - you're ready to go.
 
