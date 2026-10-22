@@ -91,6 +91,6 @@ Off the main flow entirely.
 - **`/reference-codebases`** investigates established projects for ideas, practices, and implementation choices. Reach for it to discover approaches, question whether a proposed feature is needed, or improve an agreed implementation. It selects relevant MCP indexes without requiring project configuration and uses `/codebase-design` for architecture; `/code-review` still checks our own standards and requirements.
 - **`/writing-for-agents`** is the reference for writing documents agents consume: skills, AGENTS.md, pointed-at docs.
 
-## Precondition
+## Project setup
 
-**`/setup-khanra17-skills`**: run before your first engineering flow to configure the issue tracker, triage labels, and doc layout the other skills assume. Custom issue trackers also work.
+**`/setup-khanra17-skills`**: run before your first engineering flow to configure the issue tracker, triage labels, doc layout. It also drafts stack-aware `AGENTS.md` guidance in a consistent structure, with scoped and verification references only where useful, using `/writing-for-agents`. Custom issue trackers also work. You can configure just one section later without redoing the rest.

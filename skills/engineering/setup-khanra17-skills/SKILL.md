@@ -1,6 +1,6 @@
 ---
 name: setup-khanra17-skills
-description: "Configure this repo for the engineering skills: set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills."
+description: "Set up project-specific agent instructions and engineering workflow configuration, including repository guidance and selected workflow sections."
 disable-model-invocation: true
 ---
 
@@ -11,8 +11,11 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Issue tracker**: where issues live (GitHub by default; local markdown is also supported out of the box)
 - **Triage labels**: the strings used for the four canonical triage states
 - **Domain docs**: where `GLOSSARY.md` and ADRs live, and the consumer rules for reading them
+- **Project guidance**: concise, stack-aware `AGENTS.md` and relevant verification context
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
+
+For targeted setup, run only the requested sections and their approval/write steps. Leave other configuration untouched.
 
 ## Process
 
@@ -21,7 +24,7 @@ This is a prompt-driven skill, not a deterministic script. Explore, present what
 Look at the current repo to understand its starting state. Read whatever exists; don't assume:
 
 - `git remote -v` and `.git/config`: is this a GitHub repo? Which one?
-- `AGENTS.md` and `CLAUDE.md` at the repo root: does either exist? Is there already an `## Agent skills` section in either?
+- Root and scoped `AGENTS.md` files: what guidance exists, and is there already an `## Agent skills` section?
 - `GLOSSARY.md` and `GLOSSARY-MAP.md` at the repo root
 - `docs/adr/` and any `src/*/docs/adr/` directories
 - `docs/agents/`: does this skill's prior output already exist?
@@ -60,26 +63,26 @@ The four canonical states are `needs-triage`, `needs-info`, `ready-for-implement
 
 Offer **multi-context** (a root `GLOSSARY-MAP.md` pointing to per-context `GLOSSARY.md` files) only when exploration found monorepo signals. Then confirm which layout they want.
 
+**Section G: Project agent instructions.** Include in full setup, or run on its own when requested. Read [agent-instructions.md](./agent-instructions.md) for the output structure, stack-specific discovery, and content boundaries. Draft project guidance from verified facts and agreed constraints, preserving existing instructions. Include scoped or verification references only where they earn their own file. Other targeted setup runs update their configuration pointers without rewriting project guidance.
+
 ### 3. Confirm and edit
 
-Show the user a draft of:
+Show drafts for the sections being configured:
 
-- The `## Agent skills` block to add to whichever of `CLAUDE.md` / `AGENTS.md` is being edited (see step 4 for selection rules)
-- The contents of `docs/agents/issue-tracker.md`, `docs/agents/domain.md`, and `docs/agents/triage-labels.md` (the last only when `triage` is installed)
+- The relevant `## Agent skills` block in `AGENTS.md` (see step 4)
+- The tracker and domain guides, and triage labels only when Section B ran
+- Root instructions and any scoped or verification guides only when Section G ran
 
-Let them edit before writing.
+Let the user edit and approve the drafts before file writes or remote changes.
 
 ### 4. Write
 
 **Pick the file to edit:**
 
-- If `CLAUDE.md` exists, edit it.
-- Else if `AGENTS.md` exists, edit it.
-- If neither exists, ask the user which one to create; don't pick for them.
+- If `AGENTS.md` exists, apply only the approved edits in place.
+- If it does not exist, create the `AGENTS.md` proposed and approved in step 3.
 
-Never create `AGENTS.md` when `CLAUDE.md` already exists (or vice versa); always edit the one that's already there.
-
-If an `## Agent skills` block already exists in the chosen file, update its contents in-place rather than appending a duplicate. Don't overwrite user edits to the surrounding sections.
+Use Section G's structure when authoring project guidance; a targeted configuration-only run needs only its relevant pointers. If an `## Agent skills` block already exists, update it rather than appending a duplicate. Preserve surrounding user instructions and write any scoped or verification files only as approved.
 
 The block:
 
@@ -112,4 +115,4 @@ For "other" issue trackers, write `docs/agents/issue-tracker.md` from scratch us
 
 ### 5. Done
 
-Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later; re-running this skill is only necessary if they want to switch issue trackers or restart from scratch.
+Summarize what is configured and any pending remote work. Mention that `docs/agents/*.md` can be edited directly, or setup rerun for the sections they want to change.

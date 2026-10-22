@@ -90,7 +90,8 @@ In your agent, run it once per repo. It will:
 
 - Ask you which issue tracker you want to use (GitHub, GitLab, local files, or anything else you describe)
 - Ask you what labels you apply to tickets when you triage them (`/triage` uses labels)
-- Ask you where you want to save any docs we create
+- Set up the glossary and ADR consumer guide, confirming the layout for multi-context repos
+- Draft stack-aware `AGENTS.md` guidance in a consistent format, with your approval
 
 ### 3. Bam - you're ready to go.
 
@@ -209,7 +210,7 @@ Skills I use daily for code work.
 - **[triage](./skills/engineering/triage/SKILL.md)**: Move issues through a state machine of triage roles. [Docs](./docs/engineering/triage.md)
 - **[reference-codebases](./skills/engineering/reference-codebases/SKILL.md)**: Learn from established projects to discover approaches, question proposed solutions, and improve implementation. [Docs](./docs/engineering/reference-codebases.md)
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick. [Docs](./docs/engineering/improve-codebase-architecture.md)
-- **[setup-khanra17-skills](./skills/engineering/setup-khanra17-skills/SKILL.md)**: Configure this repo for the engineering skills (issue tracker, triage labels, domain doc layout). Run once per repo before using the other engineering skills. [Docs](./docs/engineering/setup-khanra17-skills.md)
+- **[setup-khanra17-skills](./skills/engineering/setup-khanra17-skills/SKILL.md)**: Prepare project agent instructions and configure tracker, triage, and domain docs. [Docs](./docs/engineering/setup-khanra17-skills.md)
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)**: Turn the current conversation into a spec and publish it to the issue tracker. No interview, just synthesizes what you've already discussed. [Docs](./docs/engineering/to-spec.md)
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: Break any plan, spec, or conversation into tracer-bullet tickets with blocking edges, using one file per ticket locally or native blocking links on a real tracker. [Docs](./docs/engineering/to-tickets.md)
 - **[implement](./skills/engineering/implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at pre-agreed seams and closing out with `/code-review` before committing. [Docs](./docs/engineering/implement.md)
