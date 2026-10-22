@@ -1,6 +1,6 @@
 ---
 name: codebase-design
-description: Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary.
+description: Shared vocabulary for designing deep modules. Use when designing interfaces, seams, or stateful behavior, finding deepening opportunities, improving testability, or when another skill needs the deep-module vocabulary.
 ---
 
 # Codebase Design
@@ -93,6 +93,14 @@ Good interfaces make testing natural:
    ```
 
 3. **Small surface area.** Fewer methods = fewer tests needed. Fewer params = simpler test setup.
+
+## Stateful behavior
+
+When correctness depends on event ordering or combinations of state, make the legal states, transitions, and invariants explicit. Use the smallest representation that expresses them: a type, transition table, reducer, or state machine. A library or separate model document is not required.
+
+Keep state decisions testable separately from I/O, with time, randomness, and external results supplied as inputs where they affect the decision. The UI reflects the model rather than maintaining a competing version of its rules.
+
+Verify meaningful event sequences and invalid transitions through the agreed interface, including recovery, cancellation, or duplicate events when relevant. An explicit model helps expose mistakes; it does not prove itself correct.
 
 ## Relationships
 
