@@ -74,17 +74,22 @@ open_url() {
   } >/dev/null 2>&1 || warn "couldn't open a browser, so visit it manually: $url"
 }
 
+_input_ended() {
+  printf '\n  Input ended; stopping.\n' >&2
+  exit 1
+}
+
 # pause "msg" waits for the human to confirm they've done the manual part.
 pause() {
   printf '  %s%s%s ' "$DIM" "${1:-Press Enter to continue}" "$RESET"
-  read -r _ || true
+  read -r _ || _input_ended
 }
 
 # confirm "question" is a y/N gate; returns success on yes.
 confirm() {
   local reply=""
   printf '  %s? %s [y/N] ' "$YELLOW" "$1"
-  read -r reply || true
+  read -r reply || _input_ended
   [[ "$reply" =~ ^[Yy] ]]
 }
 
@@ -103,32 +108,31 @@ _existing() {
 }
 
 # ask KEY "Prompt" reads a value into $KEY. Offers the existing .env value as
-# a default on re-runs (Enter keeps it). Visible input (non-secret), edited
-# with Readline. Fails at EOF with no input.
+# a default on re-runs (Enter keeps it). Visible input (non-secret).
 ask() {
-  local key="$1" prompt="$2" current input s=$'\001' e=$'\002' p rc=0
-  current=$(_existing "$key" || true)
-  # Readline needs the colour codes wrapped in \001..\002 to place the cursor.
-  p="  $s$BOLD$e$prompt$s$RESET$e "
-  [[ -n "$current" ]] && p+="$s$DIM$e[Enter keeps current]$s$RESET$e "
-  read -e -r -p "$p" input || rc=1
-  if (( rc )) && [[ -z "$input" ]]; then return 1; fi
-  [[ -z "$input" && -n "$current" ]] && input="$current"
-  printf -v "$key" '%s' "$input"
-}
-
-# ask_secret KEY "Prompt" is like ask, but input is hidden.
-ask_secret() {
-  local key="$1" prompt="$2" current input rc=0
+  local key="$1" prompt="$2" current input
   current=$(_existing "$key" || true)
   if [[ -n "$current" ]]; then
     printf '  %s%s%s %s[Enter keeps current]%s ' "$BOLD" "$prompt" "$RESET" "$DIM" "$RESET"
   else
     printf '  %s%s%s ' "$BOLD" "$prompt" "$RESET"
   fi
-  read -rs input || rc=1
+  IFS= read -r input || _input_ended
+  [[ -z "$input" && -n "$current" ]] && input="$current"
+  printf -v "$key" '%s' "$input"
+}
+
+# ask_secret KEY "Prompt" is like ask, but input is hidden.
+ask_secret() {
+  local key="$1" prompt="$2" current input
+  current=$(_existing "$key" || true)
+  if [[ -n "$current" ]]; then
+    printf '  %s%s%s %s[Enter keeps current]%s ' "$BOLD" "$prompt" "$RESET" "$DIM" "$RESET"
+  else
+    printf '  %s%s%s ' "$BOLD" "$prompt" "$RESET"
+  fi
+  IFS= read -rs input || _input_ended
   printf '\n'
-  if (( rc )) && [[ -z "$input" ]]; then return 1; fi
   [[ -z "$input" && -n "$current" ]] && input="$current"
   printf -v "$key" '%s' "$input"
 }
