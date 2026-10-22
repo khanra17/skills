@@ -11,6 +11,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Issue tracker**: where issues live (GitHub by default; local markdown is also supported out of the box)
 - **Triage labels**: the strings used for the four canonical triage states
 - **Domain docs**: where `GLOSSARY.md` and ADRs live, and the consumer rules for reading them
+- **Reference codebases** (opt-in): prepare external collections for `/reference-codebases` and optionally save this project's index selection
 - **Project guidance**: concise, stack-aware `AGENTS.md` and relevant verification context
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
@@ -30,6 +31,7 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `docs/agents/`: does this skill's prior output already exist?
 - `.scratch/`: a sign that a local-markdown issue tracker convention is already in use
 - Is the `triage` skill installed? (a `triage` skill folder alongside this one, or `triage` in your available skills.) This decides whether Section B runs at all.
+- Is `reference-codebases` installed? Offer Section D only if it is, or reference setup was explicitly requested.
 - For GitHub: issue forms, additional required labels, any label-source/sync files.
 - Monorepo signals: a `pnpm-workspace.yaml`, a `workspaces` field in `package.json`, or a populated `packages/*` with its own `src/`. These are present only in a genuinely large multi-package repo; their absence means single-context, which is almost every repo.
 
@@ -62,6 +64,10 @@ The four canonical states are `needs-triage`, `needs-info`, `ready-for-implement
 **Section C: Domain docs.** Default to **single-context** (one `GLOSSARY.md` + `docs/adr/` at the repo root). This fits almost every repo; write it without asking.
 
 Offer **multi-context** (a root `GLOSSARY-MAP.md` pointing to per-context `GLOSSARY.md` files) only when exploration found monorepo signals. Then confirm which layout they want.
+
+**Section D: Reference codebases (opt-in).** Unless already requested, offer to prepare collections now or defer until there's something to study (recommended). Deferring leaves existing settings alone and creates no files.
+
+If chosen, follow [reference-codebases.md](./reference-codebases.md) for collection preparation and an optional project index selection. That guide owns reference setup; steps 3–5 below cover the other sections.
 
 **Section G: Project agent instructions.** Include in full setup, or run on its own when requested. Read [agent-instructions.md](./agent-instructions.md) for the output structure, stack-specific discovery, and content boundaries. Draft project guidance from verified facts and agreed constraints, preserving existing instructions. Include scoped or verification references only where they earn their own file. Other targeted setup runs update their configuration pointers without rewriting project guidance.
 

@@ -93,6 +93,8 @@ In your agent, run it once per repo. It will:
 - Set up the glossary and ADR consumer guide, confirming the layout for multi-context repos
 - Draft stack-aware `AGENTS.md` guidance in a consistent format, with your approval
 
+- Offer optional reference collections for [reference-codebases](./docs/engineering/reference-codebases.md). You can defer this or request reference-only setup later.
+
 ### 3. Bam - you're ready to go.
 
 ## Why These Skills Exist
