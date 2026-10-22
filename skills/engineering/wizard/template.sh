@@ -93,17 +93,39 @@ confirm() {
   [[ "$reply" =~ ^[Yy] ]]
 }
 
-# _existing KEY: current value of KEY in ENV_FILE, if any, with write_env's single
-# quotes or a plain dotenv double-quoted value undone.
+# _existing KEY: decode a single-line dotenv literal without executing it.
+# Missing keys return an empty value; unsupported quoting/escapes fail.
 _existing() {
-  [[ -f "$ENV_FILE" ]] || return 1
-  local line value sq="'\\''"; line=$(grep -E "^${1}=" "$ENV_FILE" | tail -n1) || return 1
-  value="${line#*=}"
-  if [[ "$value" == \'*\' ]]; then value="${value:1:${#value}-2}"; value="${value//"$sq"/\'}"
-  elif [[ "$value" == \"*\" ]]; then
-    value="${value:1:${#value}-2}"
-    [[ "$value" == *[\\\$\"]* ]] && return 1   # escapes, $ or ": can't decode safely; ask again
-  fi
+  [[ -f "$ENV_FILE" ]] || return 0
+  local lines value quote pattern status
+  lines=$(grep -E "^[[:blank:]]*(export[[:blank:]]+)?${1}[[:blank:]]*=" "$ENV_FILE") || {
+    status=$?
+    [[ "$status" -eq 1 ]] && return 0
+    return "$status"
+  }
+  value=${lines##*$'\n'}
+  value=${value#*=}
+  value=${value%$'\r'}
+  value=${value#"${value%%[![:blank:]]*}"}
+  case "$value" in
+    \"*|\'*)
+      quote=${value:0:1}
+      pattern="^${quote}([^${quote}]*)${quote}[[:blank:]]*(#.*)?$"
+      if [[ ! "$value" =~ $pattern ]]; then
+        printf '  Unsupported dotenv quoting for %s.\n' "$1" >&2
+        return 1
+      fi
+      value=${BASH_REMATCH[1]}
+      if [[ "$quote" == '"' && "$value" == *\\* ]]; then
+        printf '  Escaped dotenv values need the project env tooling: %s.\n' "$1" >&2
+        return 1
+      fi
+      ;;
+    *)
+      value=${value%%#*}
+      value=${value%"${value##*[![:blank:]]}"}
+      ;;
+  esac
   printf '%s' "$value"
 }
 
@@ -111,7 +133,7 @@ _existing() {
 # a default on re-runs (Enter keeps it). Visible input (non-secret).
 ask() {
   local key="$1" prompt="$2" current input
-  current=$(_existing "$key" || true)
+  current=$(_existing "$key") || return
   if [[ -n "$current" ]]; then
     printf '  %s%s%s %s[Enter keeps current]%s ' "$BOLD" "$prompt" "$RESET" "$DIM" "$RESET"
   else
@@ -125,7 +147,7 @@ ask() {
 # ask_secret KEY "Prompt" is like ask, but input is hidden.
 ask_secret() {
   local key="$1" prompt="$2" current input
-  current=$(_existing "$key" || true)
+  current=$(_existing "$key") || return
   if [[ -n "$current" ]]; then
     printf '  %s%s%s %s[Enter keeps current]%s ' "$BOLD" "$prompt" "$RESET" "$DIM" "$RESET"
   else
@@ -137,18 +159,30 @@ ask_secret() {
   printf -v "$key" '%s' "$input"
 }
 
-# write_env KEY VALUE upserts KEY='VALUE' into ENV_FILE (replaces any existing
-# line) and sets $KEY. Idempotent. Creates ENV_FILE at mode 0600; writes through
-# a symlink and keeps an existing file's mode.
+# write_env KEY VALUE upserts a single-line literal, quoting when needed.
 write_env() {
-  local key="$1" value="$2" tmp sq="'\\''"
-  [[ -e "$ENV_FILE" ]] || (umask 077 && : > "$ENV_FILE")
+  local key="$1" value="$2" tmp encoded status
+  if [[ "$value" == *$'\n'* || "$value" == *$'\r'* ]]; then
+    printf '  Multiline dotenv values need the project env tooling: %s.\n' "$key" >&2
+    return 1
+  elif [[ "$value" =~ ^[a-zA-Z0-9_./:@%+=,-]*$ ]]; then
+    encoded=$value
+  elif [[ "$value" != *\'* ]]; then
+    encoded="'$value'"
+  elif [[ "$value" != *\"* && "$value" != *\\* ]]; then
+    encoded="\"$value\""
+  else
+    printf '  Cannot quote %s as a dotenv literal; use the project env tooling.\n' "$key" >&2
+    return 1
+  fi
+  touch "$ENV_FILE"
   tmp=$(mktemp)
-  grep -vE "^${key}=" "$ENV_FILE" > "$tmp" || true
-  printf "%s='%s'\n" "$key" "${value//\'/$sq}" >> "$tmp"
-  cat "$tmp" > "$ENV_FILE"
-  rm -f "$tmp"
-  printf -v "$key" '%s' "$value"
+  grep -vE "^[[:blank:]]*(export[[:blank:]]+)?${key}[[:blank:]]*=" "$ENV_FILE" > "$tmp" || {
+    status=$?
+    if [[ "$status" -ne 1 ]]; then rm -f "$tmp"; return "$status"; fi
+  }
+  printf '%s=%s\n' "$key" "$encoded" >> "$tmp"
+  mv "$tmp" "$ENV_FILE"
   WRITTEN_ENV+=("$key")
   printf '  %s✓ wrote%s %s → %s\n' "$GREEN" "$RESET" "$key" "$ENV_FILE"
 }
