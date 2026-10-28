@@ -2,7 +2,7 @@
 
 `research` delegates a question to a background agent. The agent reads high-trust primary sources such as official documentation, specifications, source code, and first-party APIs, then writes one cited Markdown file.
 
-The file goes wherever the repository already keeps research notes. If no convention exists, the agent chooses a sensible location and reports it.
+The file goes wherever the repository already keeps research notes. If no convention exists, the agent chooses a sensible location and reports it. Issue-linked research retains the full cited report in an issue comment.
 
 ## When to reach for it
 
@@ -18,11 +18,11 @@ The source that owns the claim: official docs, the actual specification, first-p
 
 **Where should the result live?**
 
-The skill follows the repository's existing convention. Research can become stale, so keep, archive, or delete the file according to the project's normal documentation policy.
+Temporary investigations return the report's path. When research belongs to an issue, the invoking workflow publishes the full report as a Research findings comment.
 
 **Does another session read old research automatically?**
 
-No. Point the next skill, ticket, or conversation at the file when its findings are needed.
+No. Point the next skill, ticket, or conversation at the report or issue comment when its findings are needed.
 
 **How should I scope the question?**
 
@@ -30,7 +30,7 @@ Ask one answerable question and name any version, API, or behavior that matters.
 
 **How does wayfinder use research?**
 
-[Wayfinder](./wayfinder.md) dispatches newly created research tickets only when they are on the frontier, meaning open, unblocked, and unclaimed. It claims each ticket before starting the subagent.
+[Wayfinder](./wayfinder.md) dispatches newly created research tickets only when they are on the frontier, meaning open, unblocked, and unclaimed. It claims each ticket before starting the subagent. The full report becomes that ticket's resolution comment, linked from the map.
 
 ## It's working if
 
