@@ -3,9 +3,9 @@
 `prototype` builds throwaway code to answer one design question. It has two branches:
 
 - **Logic or state model:** one self-contained HTML file with visible state, free-play actions, and guided scenarios.
-- **UI direction:** three radically different variants on one route, selectable through `?variant=` and a development-only switcher.
+- **UI direction:** three radically different variants on one page or screen, using the project's platform and a development-only switcher.
 
-The prototype skips production hardening so feedback arrives quickly. After the question is answered, the validated decision moves into real code and the prototype is kept on a throwaway branch as a primary source.
+The prototype skips production hardening so feedback arrives quickly. After the question is answered, retain the verdict and suitable evidence: screenshots for visual choices, recordings when interaction or timing matters, and precise model rules/snippets for logic. Keep runnable source only when future execution is required, not on mandatory archive branches.
 
 ## When to reach for it
 
@@ -22,6 +22,10 @@ The question decides. State transitions, business rules, and data shape use the 
 **Why is a logic prototype one HTML file?**
 
 It opens without a server or toolchain and can be shared with a non-developer. The decision-making logic remains separate from the DOM so it can later inform the real module.
+
+**Does it work for mobile or desktop UI?**
+
+Yes. Adapt the web recipe to the project's native screen, preview/debug controls, and normal runner. Use the actual platform when its behavior matters.
 
 **Why put UI variants on an existing page?**
 
@@ -41,4 +45,4 @@ A prototype can create a lot of context. [Handoff](../productivity/handoff.md) l
 - A non-developer can drive a logic demo without reading code.
 - UI variants differ in structure, not only color or copy.
 - Feedback exposes an assumption about the idea.
-- Main keeps the validated decision, while the full prototype remains available on its branch.
+- The decision and required evidence remain; prototype-only code is removed unless future execution is required.

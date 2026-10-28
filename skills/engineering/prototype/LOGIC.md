@@ -53,9 +53,9 @@ Keep it beautiful but restrained: clean typography, generous spacing, one accent
 
 Send them the file, or open it for them. They'll click through the walkthroughs and free-play whenever they get to it; the interesting moments are when they say "wait, that shouldn't be possible" or "huh, I assumed X would be different"; those are the bugs in the _idea_, which is the whole point. If they want new actions or a new scenario, add them. Prototypes evolve.
 
-### 5. Capture the answer and the prototype
+### 5. Capture the answer and clean up
 
-Once the prototype has answered its question, capture the answer, then capture the prototype the way the [SKILL](SKILL.md) describes. The logic-specific mapping: the validated reducer / machine / function set lifts into the real module (the decision, absorbed); the HTML shell rides along to the throwaway branch that keeps the prototype as a primary source, and being one self-contained file, it stays trivially re-runnable there.
+Follow the [SKILL](SKILL.md) capture rules. Record the verdict, important scenarios, and a decision-rich model snippet when useful. Fold the validated model into the real implementation; remove the HTML shell unless future execution is part of the agreed requirement.
 
 ## Anti-patterns
 
