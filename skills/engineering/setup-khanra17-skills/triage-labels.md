@@ -1,0 +1,16 @@
+# Triage Labels
+
+The skills speak in terms of two category roles and four state roles. This file maps those roles to the actual label strings used in this repo's issue tracker.
+
+| Role in khanra17/skills    | Label in our tracker       | Meaning                                   |
+| -------------------------- | -------------------------- | ----------------------------------------- |
+| `bug`                      | `bug`                      | Something is broken                       |
+| `enhancement`              | `enhancement`              | New feature or improvement                |
+| `needs-triage`             | `needs-triage`             | Maintainer needs to evaluate this issue   |
+| `needs-info`               | `needs-info`               | Waiting on reporter for more information  |
+| `ready-for-implementation` | `ready-for-implementation` | Fully specified, ready for implementation |
+| `suspended`                | `suspended`                | Not pursuing; closed as not planned       |
+
+When a skill mentions a role (e.g. "apply the ready-for-implementation label"), use the corresponding label string from this table.
+
+Edit the middle column to match whatever vocabulary you actually use.
