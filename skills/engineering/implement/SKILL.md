@@ -4,7 +4,7 @@ description: "Implement a piece of work based on a spec or set of tickets."
 disable-model-invocation: true
 ---
 
-Implement the work described by the user in the spec or tickets.
+Implement the work in the spec or ticket the user named.
 
 ## 1. Load the work
 
@@ -15,7 +15,7 @@ Implement the work described by the user in the spec or tickets.
 - Capture the starting commit (`git rev-parse HEAD`) and note changes that already exist in the working tree. They are not part of this task.
 - When `docs/agents/github-project.md` exists and the work has an issue, invoke the `github-project` skill to record that implementation has started.
 
-Run typechecking regularly, single test files regularly, and the full test suite once at the end.
+## 2. Build
 
 Invoke the `tdd` skill and build one red-green slice at a time, testing at the seams the spec or ticket names. Typecheck and run the touched test files as you go, and run the full suite once at the end.
 
