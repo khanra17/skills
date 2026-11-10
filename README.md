@@ -256,13 +256,14 @@ General workflow tools, not code-specific.
 
 **User-invoked**
 
-- **[grill-me](./skills/productivity/grill-me/SKILL.md)**: Get relentlessly interviewed about a plan or design until every branch of the design tree is resolved.
-- **[handoff](./skills/productivity/handoff/SKILL.md)**: Compact the current conversation into a handoff document so another agent can continue the work.
-- **[teach](./skills/productivity/teach/SKILL.md)**: Teach the user a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
-- **[to-questionnaire](./skills/productivity/to-questionnaire/SKILL.md)**: Turn a decision you can't answer alone into a Markdown questionnaire for the one person who can, filled in async, or together over a meeting. It grills you about the send (who it's for, what you need back), not the subject.
-- **[wait-what](./skills/productivity/wait-what/SKILL.md)**: Fire this the moment a message doesn't land. The agent re-pitches it with the context you're missing, in plain English, using your `GLOSSARY.md` vocabulary.
+- **[grill-me](./skills/productivity/grill-me/SKILL.md)**: Get relentlessly interviewed about a plan or design until every branch of the decision tree is resolved. [Docs](./docs/productivity/grill-me.md)
+- **[handoff](./skills/productivity/handoff/SKILL.md)**: Write a handoff document so another agent or session can continue the work. [Docs](./docs/productivity/handoff.md)
+- **[reflect](./skills/productivity/reflect/SKILL.md)**: Review a session for lasting lessons and propose instruction or documentation changes for your approval. [Docs](./docs/productivity/reflect.md)
+- **[teach](./skills/productivity/teach/SKILL.md)**: Explain a concept plainly, or teach a topic over several sessions with lessons, practice, and a learning record. [Docs](./docs/productivity/teach.md)
+- **[wait-what](./skills/productivity/wait-what/SKILL.md)**: Have the agent re-explain its last message with the context you were missing, in plain English and glossary terms. [Docs](./docs/productivity/wait-what.md)
 
 **Model-invoked**
 
-- **[grilling](./skills/productivity/grilling/SKILL.md)**: Interview the user relentlessly about a plan, decision, or idea until every branch of the design tree is resolved. The reusable interview primitive behind `grill-me`, `grill-with-docs`, `triage`, `wayfinder` and `improve-codebase-architecture`.
-- **[writing-for-agents](./skills/productivity/writing-for-agents/SKILL.md)**: Writing documents for agents: skills, AGENTS.md/CLAUDE.md, and any doc an agent reaches by a pointer.
+- **[grilling](./skills/productivity/grilling/SKILL.md)**: The interview primitive behind `grill-me`, `grill-with-docs`, `triage`, `wayfinder` and `improve-codebase-architecture`: rounds of questions in dependency order, each with a recommended answer. [Docs](./docs/productivity/grilling.md)
+- **[unslop](./skills/productivity/unslop/SKILL.md)**: Plain, natural writing for human-facing prose, and smallest-useful-edit rewrites of existing text. [Docs](./docs/productivity/unslop.md)
+- **[writing-for-agents](./skills/productivity/writing-for-agents/SKILL.md)**: The reference for documents agents consume: skills, `AGENTS.md`, and any doc reached by a pointer. [Docs](./docs/productivity/writing-for-agents.md)
