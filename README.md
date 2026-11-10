@@ -207,19 +207,13 @@ Look at your feedback loops. An agent that can't see how its code runs is workin
 >
 > John Ousterhout, [A Philosophy Of Software Design](https://www.amazon.co.uk/Philosophy-Software-Design-2nd/dp/173210221X)
 
-**The Problem**: Most apps built with agents are complex and hard to change. Because agents can radically speed up coding, they also accelerate software entropy. Codebases get more complex at an unprecedented rate.
+**The Problem**: Agents write code fast, so they also grow complexity fast. Most apps built with agents become hard to change sooner than a hand-written one would.
 
-**The Fix** for this is a radical new approach to AI-powered development: caring about the design of the code.
+**The Fix** is to care about the design of the code at each step:
 
-This is built in to every layer of these skills:
-
-- [`/to-spec`](./skills/engineering/to-spec/SKILL.md) quizzes you about which modules you're touching before creating a spec
-
-And crucially, [`/improve-codebase-architecture`](./skills/engineering/improve-codebase-architecture/SKILL.md) surveys a codebase for deepening opportunities and hands you the candidates. I recommend running it on your codebase once every few days. It is a survey, not a rescue: on a genuinely old codebase it will find real candidates, but it won't untangle the mud for you.
-
-### Summary
-
-Software engineering fundamentals matter more than ever. These skills are my best effort at condensing these fundamentals into repeatable practices, to help you ship the best apps of your career. Enjoy.
+- [`/to-spec`](./skills/engineering/to-spec/SKILL.md) agrees the test seams before anything is built and writes them into the spec.
+- [`/codebase-design`](./skills/engineering/codebase-design/SKILL.md) gives you and the agent one vocabulary for module design.
+- [`/improve-codebase-architecture`](./skills/engineering/improve-codebase-architecture/SKILL.md) surveys the codebase for shallow modules that could become deep ones and reports the candidates. I run it every few days. It finds and ranks; untangling an old codebase is still work you do one candidate at a time.
 
 ## Reference
 
