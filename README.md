@@ -217,37 +217,38 @@ Look at your feedback loops. An agent that can't see how its code runs is workin
 
 ## Reference
 
-These split on one axis: who can invoke them. **User-invoked** skills are reachable only when you type them (e.g. `/grill-me`); their job is to orchestrate. **Model-invoked** skills can be invoked by you _or_ reached for automatically by the agent when the task fits; they hold the reusable discipline. A user-invoked skill may invoke model-invoked skills, but never another user-invoked one.
+Skills split on who can invoke them. **User-invoked** skills run only when you type them (e.g. `/grill-me`); their job is to orchestrate. **Model-invoked** skills can be typed by you or reached for by the agent when the task fits; they hold the reusable discipline. A user-invoked skill may invoke model-invoked skills, but never another user-invoked one.
 
 ### Engineering
 
-Skills I use daily for code work.
+Skills for daily code work.
 
 **User-invoked**
 
-- **[ask-matt](./skills/engineering/ask-matt/SKILL.md)**: Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo.
-- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: Grilling session that also builds your project's domain model, sharpening terminology and updating `GLOSSARY.md` and ADRs inline.
-- **[triage](./skills/engineering/triage/SKILL.md)**: Move issues through a state machine of triage roles.
-- **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
-- **[setup-matt-pocock-skills](./skills/engineering/setup-matt-pocock-skills/SKILL.md)**: Configure this repo for the engineering skills (issue tracker, triage labels, domain doc layout). Run once per repo before using the other engineering skills.
-- **[to-spec](./skills/engineering/to-spec/SKILL.md)**: Turn the current conversation into a spec and publish it to the issue tracker. No interview, just synthesizes what you've already discussed.
-- **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: Break any plan, spec, or conversation into a set of tracer-bullet tickets, each declaring its blocking edges, written as text in a local file, or as native blocking links on a real tracker.
-- **[implement](./skills/engineering/implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at pre-agreed seams and closing out with `/code-review` before committing.
-- **[implement-spec](./skills/engineering/implement-spec/SKILL.md)**: Implement a whole spec on one integration branch. Works the tickets as a task graph, running implementer subagents across the ready frontier for maximum concurrency, then closes out with `/code-review`.
-- **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: Plan a huge chunk of work, more than one agent session can hold, as a shared map of decision tickets on the issue tracker, and resolve them one at a time until the way to the destination is clear.
-- **[retro](./skills/engineering/retro/SKILL.md)**: Suggest improvements to the coding agent's environment (navigation, automated checks, coding standards, steering files, tooling) after a session, most severe first.
+- **[which-skill](./skills/engineering/which-skill/SKILL.md)**: Ask which skill or flow fits your situation. A router over the skills in this repo. [Docs](./docs/engineering/which-skill.md)
+- **[setup-khanra17-skills](./skills/engineering/setup-khanra17-skills/SKILL.md)**: Configure a repo's issue tracker, triage labels, domain docs, and commit conventions, draft its `AGENTS.md`, and optionally set up a GitHub Project. [Docs](./docs/engineering/setup-khanra17-skills.md)
+- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**: A grilling session that also writes settled terms into `GLOSSARY.md` and records qualifying decisions as ADRs. [Docs](./docs/engineering/grill-with-docs.md)
+- **[to-spec](./skills/engineering/to-spec/SKILL.md)**: Turn the current conversation into a spec and publish it to the issue tracker. No interview; it synthesizes what you've already discussed. [Docs](./docs/engineering/to-spec.md)
+- **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: Break a plan, spec, or conversation into tracer-bullet tickets, each declaring the tickets that block it. [Docs](./docs/engineering/to-tickets.md)
+- **[implement](./skills/engineering/implement/SKILL.md)**: Build a spec or ticket: test-first at the agreed seams, verified on every surface it touches, reviewed, committed, and the ticket finished. [Docs](./docs/engineering/implement.md)
+- **[triage](./skills/engineering/triage/SKILL.md)**: Evaluate incoming issues and move them through triage states, ending in an implementation brief or a recorded rejection. [Docs](./docs/engineering/triage.md)
+- **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: Plan work too big for one session as a shared map of decision tickets on the issue tracker, resolved one at a time until the route is clear. [Docs](./docs/engineering/wayfinder.md)
+- **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick. [Docs](./docs/engineering/improve-codebase-architecture.md)
 
 **Model-invoked**
 
-- **[prototype](./skills/engineering/prototype/SKILL.md)**: Build a throwaway prototype to answer a design question, either a single shareable HTML file for state/logic questions, or several radically different UI variations toggleable from one route.
-- **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**: Disciplined diagnosis loop for hard bugs and performance regressions: build a feedback loop that goes red on this bug → minimise → hypothesise → instrument → fix → regression-test.
-- **[research](./skills/engineering/research/SKILL.md)**: Investigate a question against high-trust primary sources and capture the findings as a cited Markdown file in the repo, run as a background agent.
-- **[tdd](./skills/engineering/tdd/SKILL.md)**: Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time.
-- **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**: Actively build and sharpen a project's domain model: challenge terms against the glossary, stress-test with edge-case scenarios, and update `GLOSSARY.md` and ADRs inline.
-- **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: Shared discipline and vocabulary for designing deep modules: a lot of behaviour behind a small interface, placed at a clean seam, testable through that interface.
-- **[code-review](./skills/engineering/code-review/SKILL.md)**: Two-axis review of the diff since a fixed point: **Standards** (does it follow the repo's coding standards, plus a Fowler smell baseline?) and **Spec** (does it faithfully implement the originating issue/spec?), run as parallel sub-agents so neither pollutes the other.
-- **[pr](./skills/engineering/pr/SKILL.md)**: The shape a pull request body should take: a summary as the smallest visual that makes the change clear, before/after evidence that it works, and a merge-danger call (one-way or two-way door, plus blast radius).
-- **[wizard](./skills/engineering/wizard/SKILL.md)**: Generate an interactive bash wizard that walks a human through steps only they can perform: provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover.
+- **[tdd](./skills/engineering/tdd/SKILL.md)**: Test-driven development in red-green slices at agreed seams, leaving refactoring to review. [Docs](./docs/engineering/tdd.md)
+- **[code-review](./skills/engineering/code-review/SKILL.md)**: Review changes since a fixed point on three separate axes: Standards, Spec, and Correctness, each in its own sub-agent. [Docs](./docs/engineering/code-review.md)
+- **[git-commit](./skills/engineering/git-commit/SKILL.md)**: Make coherent commits with a fixed type-to-emoji convention, including squash messages. [Docs](./docs/engineering/git-commit.md)
+- **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)**: A diagnosis loop for bugs with no obvious cause: build a command that goes red on the bug, minimise, hypothesise, instrument, fix, regression-test. [Docs](./docs/engineering/diagnosing-bugs.md)
+- **[prototype](./skills/engineering/prototype/SKILL.md)**: Build a throwaway logic or UI prototype to answer a design question. [Docs](./docs/engineering/prototype.md)
+- **[research](./skills/engineering/research/SKILL.md)**: Answer a question from primary sources, including how established projects solve a problem, and return a cited report. [Docs](./docs/engineering/research.md)
+- **[glossary](./skills/engineering/glossary/SKILL.md)**: Build and sharpen the project's domain language, maintaining `GLOSSARY.md` and `GLOSSARY-MAP.md`. [Docs](./docs/engineering/glossary.md)
+- **[adr](./skills/engineering/adr/SKILL.md)**: Record significant architectural decisions as ADRs, and supersede them when they change. [Docs](./docs/engineering/adr.md)
+- **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: Vocabulary and principles for designing deep modules: a lot of behaviour behind a small interface, at a clean seam, testable through that interface. [Docs](./docs/engineering/codebase-design.md)
+- **[technical-writing](./skills/engineering/technical-writing/SKILL.md)**: Write or review human-facing technical material, from guides and READMEs to issue and PR descriptions. [Docs](./docs/engineering/technical-writing.md)
+- **[github-project](./skills/engineering/github-project/SKILL.md)**: Keep an opted-in GitHub Project's membership and delivery fields current. [Docs](./docs/engineering/github-project.md)
+- **[wizard](./skills/engineering/wizard/SKILL.md)**: Generate an interactive bash script that walks a human through steps only they can perform: provisioning, credentials, third-party dashboards, one-off cutovers. [Docs](./docs/engineering/wizard.md)
 
 ### Productivity
 
