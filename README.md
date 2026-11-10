@@ -129,7 +129,7 @@ Every skill is linked in the [Reference](#reference) below.
 
 ## Why These Skills Exist
 
-I built these skills as a way to fix common failure modes I see with Claude Code, Codex, and other coding agents.
+These skills address common failure modes with Claude Code, Codex, and other coding agents.
 
 ### #1: The Agent Didn't Do What I Want
 
@@ -137,16 +137,16 @@ I built these skills as a way to fix common failure modes I see with Claude Code
 >
 > David Thomas & Andrew Hunt, [The Pragmatic Programmer](https://www.amazon.co.uk/Pragmatic-Programmer-Anniversary-Journey-Mastery/dp/B0833F1T3V)
 
-**The Problem**. The most common failure mode in software development is misalignment. You think the dev knows what you want. Then you see what they've built - and you realize it didn't understand you at all.
+**The Problem**: The most common failure mode in software development is misalignment. You think the dev knows what you want. Then you see what they built, and you realize they didn't understand you at all.
 
-This is just the same in the AI age. There is a communication gap between you and the agent. The fix for this is a **grilling session** - getting the agent to ask you detailed questions about what you're building.
+The same gap exists between you and an agent. The fix is a **grilling session**: the agent asks you detailed questions about what you're building until nothing is left assumed.
 
 **The Fix** is to use:
 
-- [`/grill-me`](./skills/productivity/grill-me/SKILL.md) - for non-code uses
-- [`/grill-with-docs`](./skills/engineering/grill-with-docs/SKILL.md) - same as [`/grill-me`](./skills/productivity/grill-me/SKILL.md), but adds more goodies (see below)
+- [`/grill-with-docs`](./skills/engineering/grill-with-docs/SKILL.md) inside a project. It also records the terms and decisions you settle (see #2)
+- [`/grill-me`](./skills/productivity/grill-me/SKILL.md) for anything with no repo under it
 
-These are my most popular skills. They help you align with the agent before you get started, and think deeply about the change you're making. Use them _every_ time you want to make a change.
+Run one before you make a change, so you and the agent agree on it first.
 
 ### #2: The Agent Is Way Too Verbose
 
