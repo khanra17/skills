@@ -187,17 +187,15 @@ A project's `GLOSSARY.md` defines shared terms (see the [glossary docs](./docs/e
 >
 > David Thomas & Andrew Hunt, [The Pragmatic Programmer](https://www.amazon.co.uk/Pragmatic-Programmer-Anniversary-Journey-Mastery/dp/B0833F1T3V)
 
-**The Problem**: Let's say that you and the agent are aligned on what to build. What happens when the agent _still_ produces crap?
+**The Problem**: You and the agent agree on what to build, and the result still doesn't work.
 
-It's time to look at your feedback loops. Without feedback on how the code it produces actually runs, the agent will be flying blind.
+Look at your feedback loops. An agent that can't see how its code runs is working blind.
 
-**The Fix**: You need the usual tranche of feedback loops: static types, browser access, and automated tests.
+**The Fix**: Give it the usual feedback loops: static types, browser access, and automated tests.
 
-For automated tests, a red-green-refactor loop is critical. This is where the agent writes a failing test first, then fixes the test. This helps give the agent a consistent level of feedback that results in far better code.
-
-I've built a **[`/tdd`](./skills/engineering/tdd/SKILL.md) skill** you can slot into any project. It encourages red-green-refactor and gives the agent plenty of guidance on what makes good and bad tests.
-
-For debugging, I've also built a **[`/diagnosing-bugs`](./skills/engineering/diagnosing-bugs/SKILL.md)** skill that wraps best debugging practices into a disciplined loop, gated phase by phase.
+- [`/tdd`](./skills/engineering/tdd/SKILL.md) works one red-green slice at a time: a failing test, then just enough code to pass it. It carries guidance on what makes a test worth keeping.
+- [`/code-review`](./skills/engineering/code-review/SKILL.md) checks the finished change against your standards, the spec, and for bugs.
+- [`/diagnosing-bugs`](./skills/engineering/diagnosing-bugs/SKILL.md) handles the hard failures: it builds a command that reproduces the bug before it forms any theory about the cause.
 
 ### #4: We Built A Ball Of Mud
 
