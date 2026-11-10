@@ -9,14 +9,14 @@
 set -euo pipefail
 
 # ──────────────────────────────────────────────────────────────────────────
-# Wizard library: delightful, consistent UX, identical across every wizard.
+# Wizard library: consistent UX, identical across every wizard.
 # ──────────────────────────────────────────────────────────────────────────
 
 if [[ -t 1 ]] && command -v tput >/dev/null 2>&1 && [[ "$(tput colors 2>/dev/null || echo 0)" -ge 8 ]]; then
   BOLD=$(tput bold); DIM=$(tput dim); RESET=$(tput sgr0)
-  BLUE=$(tput setaf 4); GREEN=$(tput setaf 2); YELLOW=$(tput setaf 3)
+  BLUE=$(tput setaf 4); GREEN=$(tput setaf 2); YELLOW=$(tput setaf 3); RED=$(tput setaf 1)
 else
-  BOLD=""; DIM=""; RESET=""; BLUE=""; GREEN=""; YELLOW=""
+  BOLD=""; DIM=""; RESET=""; BLUE=""; GREEN=""; YELLOW=""; RED=""
 fi
 
 # Author sets this at the top of the stages section.
@@ -32,8 +32,7 @@ SKIPPED=()        # things we couldn't do (e.g. gh missing)
 # output isn't a terminal, so piped logs stay readable.
 _clear() {
   [[ -t 1 ]] || return 0
-  if command -v tput >/dev/null 2>&1 && tput clear 2>/dev/null; then return 0; fi
-  printf '\033[2J\033[3J\033[H'
+  if command -v tput >/dev/null 2>&1; then tput clear; else printf '\033[2J\033[3J\033[H'; fi
 }
 
 # banner "Title" shows the opening frame: what this wizard does.
@@ -67,85 +66,124 @@ warn() { printf '  %s⚠ %s%s\n' "$YELLOW" "$1" "$RESET"; }
 open_url() {
   local url="$1"
   printf '  %s↗ opening%s %s\n' "$GREEN" "$RESET" "$url"
+  # explorer.exe exits non-zero even when it opens the page, so its status is ignored.
   { if   command -v wslview     >/dev/null 2>&1; then wslview "$url"
-    elif command -v explorer.exe >/dev/null 2>&1; then explorer.exe "$url"
+    elif command -v explorer.exe >/dev/null 2>&1; then explorer.exe "$url" || true
     elif command -v xdg-open    >/dev/null 2>&1; then xdg-open "$url"
     elif command -v open        >/dev/null 2>&1; then open "$url"
-    else false; fi
+    else warn "couldn't open a browser; visit it manually: $url"; fi
   } >/dev/null 2>&1 || warn "couldn't open a browser, so visit it manually: $url"
+}
+
+_input_ended() {
+  printf '\n  Input ended; stopping.\n' >&2
+  exit 1
 }
 
 # pause "msg" waits for the human to confirm they've done the manual part.
 pause() {
   printf '  %s%s%s ' "$DIM" "${1:-Press Enter to continue}" "$RESET"
-  read -r _ || true
+  read -r _ || _input_ended
 }
 
 # confirm "question" is a y/N gate; returns success on yes.
 confirm() {
   local reply=""
   printf '  %s? %s [y/N] ' "$YELLOW" "$1"
-  read -r reply || true
+  read -r reply || _input_ended
   [[ "$reply" =~ ^[Yy] ]]
 }
 
-# _existing KEY: current value of KEY in ENV_FILE, if any, with write_env's single
-# quotes or a plain dotenv double-quoted value undone.
+# _existing KEY: decode a single-line dotenv literal without executing it.
+# Missing keys return an empty value; unsupported quoting/escapes fail.
 _existing() {
-  [[ -f "$ENV_FILE" ]] || return 1
-  local line value sq="'\\''"; line=$(grep -E "^${1}=" "$ENV_FILE" | tail -n1) || return 1
-  value="${line#*=}"
-  if [[ "$value" == \'*\' ]]; then value="${value:1:${#value}-2}"; value="${value//"$sq"/\'}"
-  elif [[ "$value" == \"*\" ]]; then
-    value="${value:1:${#value}-2}"
-    [[ "$value" == *[\\\$\"]* ]] && return 1   # escapes, $ or ": can't decode safely; ask again
-  fi
+  [[ -f "$ENV_FILE" ]] || return 0
+  local lines value quote pattern status
+  lines=$(grep -E "^[[:blank:]]*(export[[:blank:]]+)?${1}[[:blank:]]*=" "$ENV_FILE") || {
+    status=$?
+    [[ "$status" -eq 1 ]] && return 0
+    return "$status"
+  }
+  value=${lines##*$'\n'}
+  value=${value#*=}
+  value=${value%$'\r'}
+  value=${value#"${value%%[![:blank:]]*}"}
+  case "$value" in
+    \"*|\'*)
+      quote=${value:0:1}
+      pattern="^${quote}([^${quote}]*)${quote}[[:blank:]]*(#.*)?$"
+      if [[ ! "$value" =~ $pattern ]]; then
+        printf '  Unsupported dotenv quoting for %s.\n' "$1" >&2
+        return 1
+      fi
+      value=${BASH_REMATCH[1]}
+      if [[ "$quote" == '"' && "$value" == *\\* ]]; then
+        printf '  Escaped dotenv values need the project env tooling: %s.\n' "$1" >&2
+        return 1
+      fi
+      ;;
+    *)
+      value=${value%%#*}
+      value=${value%"${value##*[![:blank:]]}"}
+      ;;
+  esac
   printf '%s' "$value"
 }
 
 # ask KEY "Prompt" reads a value into $KEY. Offers the existing .env value as
-# a default on re-runs (Enter keeps it). Visible input (non-secret), edited
-# with Readline. Fails at EOF with no input.
+# a default on re-runs (Enter keeps it). Visible input (non-secret).
 ask() {
-  local key="$1" prompt="$2" current input s=$'\001' e=$'\002' p rc=0
-  current=$(_existing "$key" || true)
-  # Readline needs the colour codes wrapped in \001..\002 to place the cursor.
-  p="  $s$BOLD$e$prompt$s$RESET$e "
-  [[ -n "$current" ]] && p+="$s$DIM$e[Enter keeps current]$s$RESET$e "
-  read -e -r -p "$p" input || rc=1
-  if (( rc )) && [[ -z "$input" ]]; then return 1; fi
+  local key="$1" prompt="$2" current input
+  current=$(_existing "$key") || return
+  if [[ -n "$current" ]]; then
+    printf '  %s%s%s %s[Enter keeps current]%s ' "$BOLD" "$prompt" "$RESET" "$DIM" "$RESET"
+  else
+    printf '  %s%s%s ' "$BOLD" "$prompt" "$RESET"
+  fi
+  IFS= read -r input || _input_ended
   [[ -z "$input" && -n "$current" ]] && input="$current"
   printf -v "$key" '%s' "$input"
 }
 
 # ask_secret KEY "Prompt" is like ask, but input is hidden.
 ask_secret() {
-  local key="$1" prompt="$2" current input rc=0
-  current=$(_existing "$key" || true)
+  local key="$1" prompt="$2" current input
+  current=$(_existing "$key") || return
   if [[ -n "$current" ]]; then
     printf '  %s%s%s %s[Enter keeps current]%s ' "$BOLD" "$prompt" "$RESET" "$DIM" "$RESET"
   else
     printf '  %s%s%s ' "$BOLD" "$prompt" "$RESET"
   fi
-  read -rs input || rc=1
+  IFS= read -rs input || _input_ended
   printf '\n'
-  if (( rc )) && [[ -z "$input" ]]; then return 1; fi
   [[ -z "$input" && -n "$current" ]] && input="$current"
   printf -v "$key" '%s' "$input"
 }
 
-# write_env KEY VALUE upserts KEY='VALUE' into ENV_FILE (replaces any existing
-# line) and sets $KEY. Idempotent. Creates ENV_FILE at mode 0600; writes through
-# a symlink and keeps an existing file's mode.
+# write_env KEY VALUE upserts a single-line literal, quoting when needed.
 write_env() {
-  local key="$1" value="$2" tmp sq="'\\''"
-  [[ -e "$ENV_FILE" ]] || (umask 077 && : > "$ENV_FILE")
+  local key="$1" value="$2" tmp encoded status
+  if [[ "$value" == *$'\n'* || "$value" == *$'\r'* ]]; then
+    printf '  Multiline dotenv values need the project env tooling: %s.\n' "$key" >&2
+    return 1
+  elif [[ "$value" =~ ^[a-zA-Z0-9_./:@%+=,-]*$ ]]; then
+    encoded=$value
+  elif [[ "$value" != *\'* ]]; then
+    encoded="'$value'"
+  elif [[ "$value" != *\"* && "$value" != *\\* ]]; then
+    encoded="\"$value\""
+  else
+    printf '  Cannot quote %s as a dotenv literal; use the project env tooling.\n' "$key" >&2
+    return 1
+  fi
+  touch "$ENV_FILE"
   tmp=$(mktemp)
-  grep -vE "^${key}=" "$ENV_FILE" > "$tmp" || true
-  printf "%s='%s'\n" "$key" "${value//\'/$sq}" >> "$tmp"
-  cat "$tmp" > "$ENV_FILE"
-  rm -f "$tmp"
-  printf -v "$key" '%s' "$value"
+  grep -vE "^[[:blank:]]*(export[[:blank:]]+)?${key}[[:blank:]]*=" "$ENV_FILE" > "$tmp" || {
+    status=$?
+    if [[ "$status" -ne 1 ]]; then rm -f "$tmp"; return "$status"; fi
+  }
+  printf '%s=%s\n' "$key" "$encoded" >> "$tmp"
+  mv "$tmp" "$ENV_FILE"
   WRITTEN_ENV+=("$key")
   printf '  %s✓ wrote%s %s → %s\n' "$GREEN" "$RESET" "$key" "$ENV_FILE"
 }
@@ -194,11 +232,7 @@ finish() {
 # ──────────────────────────────────────────────────────────────────────────
 # STAGES: author this section. One stage() per step the human takes.
 # Replace the example below. Set TOTAL_STAGES to match the stages you write.
-# Keep every stage inside run_wizard and the last line as is: bash then parses
-# the whole file before the first prompt, so an edit mid-run can't break it.
 # ──────────────────────────────────────────────────────────────────────────
-
-run_wizard() {
 
 TOTAL_STAGES=1
 
@@ -218,6 +252,3 @@ set_secret STRIPE_SECRET_KEY "$STRIPE_SECRET_KEY"   # CI needs this one
 # ──────────────────────────────────────────────────────────────────────────
 
 finish
-}
-
-run_wizard "$@"; exit
