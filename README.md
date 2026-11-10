@@ -35,60 +35,97 @@ The first command installs the engineering set, including `setup-khanra17-skills
 
 The installed files are yours to edit. Update when you want with `npx skills update`.
 
-<details>
-<summary><strong>GitHub Copilot</strong> (CLI and VS Code)</summary>
+### 2. Run `/setup-khanra17-skills`
 
-```bash
-copilot plugin marketplace add mattpocock/skills
-copilot plugin install mattpocock-skills@mattpocock
+Run it once per repo for the engineering skills. Productivity skills need no setup. It will:
+
+- Ask which issue tracker you use: GitHub, local files, or another tracker you describe
+- Ask whether to keep the default triage labels (`/triage` works through labels)
+- Write the guide that tells skills where the glossary and ADRs live, confirming the layout for multi-context repos
+- Draft stack-aware `AGENTS.md` guidance for your approval
+- Confirm the Gitmoji + Conventional Commits convention and record where your repository differs
+- Offer a GitHub Project for delivery tracking, which small projects can skip
+
+### 3. Start with `/which-skill`
+
+Describe what you are trying to do and it names the skill or flow to use.
+
+## Workflow
+
+Most work travels one route, from an idea to a closed ticket. The other skills are ways onto that route, or run inside it.
+
+```mermaid
+%%{init: {"flowchart": {"nodeSpacing": 24, "rankSpacing": 34, "padding": 10}}}%%
+flowchart TB
+    setup["<b>/setup-khanra17-skills</b><br/>once per repo"]:::step --> idea([You have an idea]):::start
+    idea --> grill["<b>/grill-with-docs</b><br/>interview that keeps<br/>a glossary and ADRs"]:::skill
+    arch["<b>/improve-codebase-<br/>architecture</b><br/>upkeep survey"]:::ramp -- pick a candidate --> grill
+
+    grill --> q1{{"Need to see<br/>it running?"}}:::ask
+    q1 -- yes --> proto["<b>/prototype</b><br/>throwaway logic or UI"]:::skill
+    proto --> q2
+    q1 -- no --> q2{{"Fits in one<br/>session?"}}:::ask
+
+    q2 -- no --> spec["<b>/to-spec</b><br/>conversation → spec"]:::skill
+    way["<b>/wayfinder</b><br/>too big for one session:<br/>map the decisions first"]:::ramp --> spec
+    spec --> tickets["<b>/to-tickets</b><br/>vertical slices<br/>with blockers"]:::skill
+    tickets --> impl
+    q2 -- yes --> impl
+    tri["<b>/triage</b><br/>issues piling up"]:::ramp --> impl
+
+    subgraph impl ["/implement, per ticket"]
+        direction TB
+        tdd["<b>/tdd</b><br/>red, green, repeat"]:::skill --> verify["verify every<br/>surface touched"]:::step
+        verify --> review["<b>/code-review</b><br/>standards, spec,<br/>correctness"]:::skill
+        review --> commit["<b>/git-commit</b><br/>with Closes #N"]:::skill
+    end
+
+    impl --> done([Ticket closes when<br/>the commit lands]):::finish
+    done -. next unblocked ticket .-> impl
+    done -. a bug turns up .-> diag["<b>/diagnosing-bugs</b><br/>repro loop, then fix"]:::ramp
+    diag --> fixed([Fixed, with a<br/>regression test]):::finish
+
+    classDef start fill:#fff8c5,stroke:#9a6700,color:#3b2300
+    classDef skill fill:#ddf4ff,stroke:#0969da,color:#0a3069
+    classDef ramp fill:#ffe7d1,stroke:#bc4c00,color:#5c2200
+    classDef ask fill:#fbefff,stroke:#8250df,color:#3e1f79
+    classDef step fill:#f6f8fa,stroke:#57606a,color:#24292f
+    classDef finish fill:#dafbe1,stroke:#1a7f37,color:#0f3d1e
+    style impl fill:transparent,stroke:#4493f8,stroke-dasharray:5 4
 ```
 
-Then, once, add to `~/.copilot/settings.json`:
+Blue boxes are the main route. Orange boxes are the other ways in: each joins the route where its arrow lands. Purple boxes are the two decisions that shape the route.
 
-```json
-{
-  "extraKnownMarketplaces": {
-    "mattpocock": { "source": { "source": "github", "repo": "mattpocock/skills" }, "autoUpdate": true }
-  }
-}
-```
+Two links are left out of the picture to keep it readable:
 
-In VS Code, run **Chat: Install Plugin From Source** and enter `https://github.com/mattpocock/skills`. It updates daily.
+- `/diagnosing-bugs` points you to `/improve-codebase-architecture` when a bug has no seam to test at.
+- A prototype that would crowd the planning session is built in a fresh one, with `/handoff` carrying the question out and the verdict back.
 
-</details>
+**Running inside the route.** The agent reaches for these when the work calls for them, and you can type them too.
 
-<details>
-<summary><strong>Gemini CLI</strong> (manual updates)</summary>
+| Skill | Where it shows up |
+| --- | --- |
+| `grilling` | The interview inside `grill-with-docs`, `triage`, `wayfinder`, and architecture reviews |
+| `glossary`, `adr` | Whenever a domain term or an architectural decision gets settled |
+| `codebase-design` | When a module's shape is the question, in `tdd` and architecture work |
+| `research` | When a decision waits on outside facts, including `wayfinder`'s research tickets |
+| `technical-writing`, `unslop` | Docs, and issue or PR descriptions |
+| `github-project` | When issues change and when `implement` starts and finishes, if you opted in to a board |
+| `wizard` | When a step needs you: credentials, dashboards, cutovers |
 
-```bash
-gemini skills install https://github.com/mattpocock/skills.git --path skills/engineering
-gemini skills install https://github.com/mattpocock/skills.git --path skills/productivity
-```
+**Any time.** These sit outside the route.
 
-Re-run both commands to update.
+| Skill | Use it to |
+| --- | --- |
+| `which-skill` | Ask what to run next |
+| `grill-me` | Get the interview with no repo and no files written |
+| `handoff` | Move work to another session, harness, or person |
+| `wait-what` | Have the last message explained again |
+| `reflect` | Turn a session's lessons into instruction changes |
+| `teach` | Learn a topic, in one answer or over many sessions |
+| `writing-for-agents` | Write skills and `AGENTS.md` |
 
-</details>
-
-<details>
-<summary><strong>Any other agent, or editable files</strong> (manual updates)</summary>
-
-```bash
-npx skills@latest add mattpocock/skills -a <agent>  # cursor, opencode, devin, windsurf, amp, pi; omit -a to choose
-```
-
-When the installer asks which skills to take, include `setup-matt-pocock-skills`. To update, run `npx skills@latest update`, and re-run `add` to pick up new skills.
-
-</details>
-
-### 2. Run `/setup-matt-pocock-skills`
-
-In your agent, run it once per repo. It will:
-
-- Ask you which issue tracker you want to use (GitHub, GitLab, local files, or anything else you describe)
-- Ask you what labels you apply to tickets when you triage them (`/triage` uses labels)
-- Ask you where you want to save any docs we create
-
-### 3. Bam - you're ready to go.
+Every skill is linked in the [Reference](#reference) below.
 
 ## Why These Skills Exist
 
