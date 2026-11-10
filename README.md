@@ -148,42 +148,38 @@ The same gap exists between you and an agent. The fix is a **grilling session**:
 
 Run one before you make a change, so you and the agent agree on it first.
 
-### #2: The Agent Is Way Too Verbose
+### #2: The Agent Doesn't Speak The Project's Language
 
 > With a ubiquitous language, conversations among developers and expressions of the code are all derived from the same domain model.
 >
 > Eric Evans, [Domain-Driven-Design](https://www.amazon.co.uk/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215)
 
-**The Problem**: At the start of a project, devs and the people they're building the software for (the domain experts) are usually speaking different languages.
+**The Problem**: At the start of a project, devs and the people they're building for (the domain experts) speak different languages.
 
-I felt the same tension with my agents. Agents are usually dropped into a project and asked to figure out the jargon as they go. So they use 20 words where 1 will do.
+Agents have it worse. They are dropped into a project and left to work out the jargon as they go, so they use 20 words where 1 would do, and name the same thing three ways across the code.
 
-**The Fix** for this is a shared language. It's a document that helps agents decode the jargon used in the project.
+**The Fix** is a shared language: a glossary that defines the project's terms once.
 
 <details>
 <summary>
 Example
 </summary>
 
-Here's an example [glossary](https://github.com/mattpocock/course-video-manager/blob/076a5a7a182db0fe1e62971dd7a68bcadf010f1c/CONTEXT.md) (still named `CONTEXT.md` at that pinned commit, from before the skills renamed the convention), from my `course-video-manager` repo. Which one is easier to read?
+A project's `GLOSSARY.md` defines shared terms (see the [glossary docs](./docs/engineering/glossary.md)). In a course-management app, which description is easier to read?
 
 - **BEFORE**: "There's a problem when a lesson inside a section of a course is made 'real' (i.e. given a spot in the file system)"
 - **AFTER**: "There's a problem with the materialization cascade"
 
-This concision pays off session after session.
-
 </details>
 
-This is built into [`/grill-with-docs`](./skills/engineering/grill-with-docs/SKILL.md). It's a grilling session, but that helps you build a shared language with the AI, and document hard-to-explain decisions in ADR's.
-
-It's hard to explain how powerful this is. It might be the single coolest technique in this repo. Try it, and see.
+[`/grill-with-docs`](./skills/engineering/grill-with-docs/SKILL.md) builds this as you go. It is a grilling session that also writes each term you settle into the glossary and records hard-to-explain decisions as ADRs.
 
 > [!TIP]
-> A shared language has many other benefits than reducing verbosity:
+> A shared language does more than shorten messages:
 >
-> - **Variables, functions and files are named consistently**, using the shared language
-> - As a result, the **codebase is easier to navigate** for the agent
-> - The agent also **spends fewer tokens on thinking**, because it has access to a more concise language
+> - Variables, functions and files get named consistently
+> - The codebase becomes easier for the agent to navigate
+> - The agent spends fewer tokens thinking, because it has a concise word for each concept
 
 ### #3: The Code Doesn't Work
 
