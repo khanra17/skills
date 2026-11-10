@@ -1,70 +1,41 @@
+# writing-for-agents
+
 ## What it does
 
-`writing-for-agents` is the reference for writing agent-facing documents: a skill, an `AGENTS.md` or `CLAUDE.md`, a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), a runtime prompt, a README, any doc an [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reads. The format differs, but the writing does not. The same levers make each one predictable, so the agent follows the same *process* on every run (not necessarily to the same output).
+`writing-for-agents` is the reference for documents an agent consumes: skills, `AGENTS.md`, and documents an agent reaches through a pointer.
 
-Its default fix is to delete, not to explain. Ask an agent to write instructions for another agent and it spends most of its words explaining what the [model](https://www.aihero.dev/ai-coding-dictionary/model) already knows. Each of those lines is a **no-op**: it costs [context](https://www.aihero.dev/ai-coding-dictionary/context) and changes no behaviour. This reference helps you find them, so it is as useful on a document you already have as on a blank file.
-
-It was called `writing-great-skills` until v1.1. The new name fits what it always was. Almost none of it is specific to skills. The skill-only mechanics (frontmatter, the model- versus user-invoked choice, router skills) live in a linked `SKILL-MECHANICS.md` that you read only when the document in front of you is a skill.
+It covers how to word pointers so the agent loads the right document at the right time, what to keep in the main file and what to move behind a pointer, how to end each step on a checkable completion criterion, how to anchor behavior with a few well-chosen words, and how to prune what the model already does by default.
 
 ## When to reach for it
 
-Type `/writing-for-agents`, or the agent reaches for it on its own when you're creating or editing a skill, or modifying `AGENTS.md` or `CLAUDE.md`.
+Type `/writing-for-agents`, or let the agent reach for it, when creating or editing a skill, an `AGENTS.md`, or an agent-facing reference. [Setup](../engineering/setup-khanra17-skills.md) and [reflect](./reflect.md) call it when they draft instructions.
 
-Reach for it by hand for everything else an agent reads: your docs, specs and [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket), system and [AFK](https://www.aihero.dev/ai-coding-dictionary/afk) prompts. The test is one question: does an agent read this? It does not matter how the agent gets the document: a pointer names it, a human pastes it, or it is in the repo. To find out what a codebase contains, use [grill-with-docs](https://aihero.dev/skills-grill-with-docs). This reference controls how a document reads, not what it knows.
-
-## The two loads
-
-The central idea is two budgets that every document and pointer spends:
-
-- **Context load**: the cost of always-loaded material on the agent's window: an `AGENTS.md` line, a skill description, anything sitting in context every [turn](https://www.aihero.dev/ai-coding-dictionary/turn) whether or not it fires.
-- **Cognitive load**: the cost to you of remembering which documents exist and when to reach for each. You are the index. Do not try to minimise this cost, because it is the price of human agency.
-
-Once you think in these two loads, most authoring decisions (split or don't, inline or disclose, point or push) become the same trade made in different places.
-
-## The levers
-
-- **[Context pointers](https://www.aihero.dev/ai-coding-dictionary/context-pointer)**: the reference held in context that names out-of-context material and encodes when to reach it. A skill description and an `AGENTS.md` line naming a doc are the same thing. The pointer's *wording*, not its target, decides how reliably the agent follows it.
-- **Information hierarchy**: the ladder from in-file step, to in-file reference, to disclosed reference behind a pointer. **[Progressive disclosure](https://www.aihero.dev/ai-coding-dictionary/progressive-disclosure)** is moving material down that ladder so the top stays easy to read.
-- **Completion criteria**: how clear and demanding each step's done-condition is, and the **legwork** that demand causes. They are the defence against **premature completion**.
-- **Leading words**: a compact concept already in the model's pretraining (*tight*, *red*, *tracer bullet*) that the agent thinks with while running the document. It works in two places. In the body it guides execution, and in the pointer it triggers invocation.
-- **Pruning**: single source of truth, relevance, and the no-op test applied sentence by sentence, against **duplication**, **sediment** and **sprawl**.
+For prose a person will read, use [unslop](./unslop.md) or [technical-writing](../engineering/technical-writing.md).
 
 ## Common questions
 
-**Where did `/writing-great-skills` go?**
-It is this skill, renamed in v1.1. Users pointed it at `AGENTS.md`, docs, specs, tickets and runtime prompts long before the rename. Structure, leading words and pruning apply to any text an agent reads. There is no alias. Reinstall under the new name.
+**What is a context pointer?**
 
-**"Writing for agents": so the agent does the writing?**
-The other way round. You are the author; the agent is the reader. That is what makes it hard. You write for a reader that has already read everything, so explanation is waste and precision is the whole job.
+A short reference that tells the agent what another document contains and when to load it. A skill's description is one; so is a line in `AGENTS.md` naming a doc. Its wording decides how reliably the target gets read.
 
-**Can't I just ask the agent to write it for me?**
-You can, and it will produce something verbose. Left alone the model explains what it already knows, and it will not apply the no-op test or reach for a leading word on its own. Use the reference to review the draft. Most of its value comes from that review pass.
+**What stays in the main file?**
 
-**I asked an agent to trim a document and it cut the functionality.**
-Agents told to "streamline" optimise for length, because length is the thing they can see. The no-op test checks behaviour, not style: delete the line and ask whether the agent's behaviour changed. When a sentence fails, delete the whole sentence rather than trim words from it, and settle a disagreement about it by running the document, not by arguing.
+The steps and rules every path needs. Reference that only some branches use goes behind a pointer.
 
-**How do I know when it's done?**
-When it works, and you can no longer find duplication, sediment or no-ops. There is no automated eval. You check by running the document by hand and using the failure-mode vocabulary to diagnose problems. When a document misbehaves, the same vocabulary helps you fix it: name the failure mode first, then fix that.
+**When should a skill be model-invoked?**
 
-**Should this live in `CLAUDE.md` or somewhere else?**
-Ask which load you want to pay. `CLAUDE.md` loads into every [session](https://www.aihero.dev/ai-coding-dictionary/session) unconditionally. Material behind a pointer costs only the pointer's own line until it fires. Anything that applies in one session out of ten costs context load in the other nine.
+When the agent has to find it without being told, or another skill has to call it. A skill you only ever type yourself is better user-invoked, where it costs no context.
 
-**Do I need to rewrite my documents for each new model?**
-Mostly no, and over-fitting to one model causes its own problems. Updating for a new model is usually another no-op pass rather than a rewrite.
+**Why does it tell me to remove instructions?**
 
-**My skill only works on the exact task I built it from.**
-The common method (do the work once, then have the agent write it up as a skill) fits that one run too closely, and the examples come out too specific. Keep the run as evidence, then generalise on purpose: strip what belonged to that repo and those files, and write for the class of task.
+An instruction the model already follows costs attention and changes nothing. A sentence denying a past mistake, or an instruction written in capitals, can make the behavior worse: the first plants the idea, the second gets over-applied.
 
-**English isn't my first language. Do I lose the leading-word advantage?**
-No. Finding the word that packs the most behaviour into the fewest [tokens](https://www.aihero.dev/ai-coding-dictionary/token) is work the reference does for you.
+**What is a router skill?**
+
+A user-invoked map of the other skills, so you have one name to remember. [which-skill](../engineering/which-skill.md) is this library's.
 
 ## It's working if
 
-- The document gets shorter as it gets better, and you are surprised how little is left.
-- You can point at a leading word and see it change the agent's behaviour in more than one place.
-- Nothing is stated twice, in any form. Duplication is the most reliable sign a document was never tested.
-- Reference that only one branch needs sits behind a pointer rather than in the main file.
-
-## Where it fits
-
-This is a reach-for-it-anytime standalone reference. It applies to the whole set, not to one skill. Every skill here was written with it, and it also covers the documents the other skills produce (a `GLOSSARY.md` and its ADRs, a spec, a ticket) once an agent has to read them. Its one direct caller is [retro](https://aihero.dev/skills-retro), which loads it before proposing any steering file or skill. When you're unsure which skill or flow fits a task, [ask-matt](https://aihero.dev/skills-ask-matt) routes you over the whole set.
+- Deleting any one sentence from the document would change what the agent does.
+- Each step says how the agent knows it is finished.
+- Each rule is stated in one place.
