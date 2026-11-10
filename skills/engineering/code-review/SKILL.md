@@ -13,33 +13,43 @@ Each axis runs as its own sub-agent with a fresh context window, in parallel, an
 
 ## Process
 
-### 1. Pin the fixed point
+### 1. Pin the fixed point and scope
 
-Whatever the user said is the fixed point (a commit SHA, branch name, tag, `main`, `HEAD~5`, etc.). If they didn't specify one, ask for it.
+Use the fixed point supplied by the user or invoking skill (a commit SHA, branch name, tag, `main`, `HEAD~5`, etc.). If none was supplied, ask for it.
 
 Confirm the fixed point resolves (`git rev-parse <fixed-point>`) and select the requested review mode:
 
-Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref or empty diff should fail here, not inside two parallel sub-agents.
+- **Committed branch/PR:** `git diff <fixed-point>...HEAD`, comparing against the merge-base.
+- **Working tree:** `git diff <fixed-point>`, including tracked committed, staged, and unstaged changes since that point. List untracked files with `git ls-files --others --exclude-standard` and read relevant ones as additions.
+
+Keep the supplied task scope; exclude unrelated changes. Capture the selected diff command, scope, relevant untracked-file paths, and commit list (`git log <fixed-point>..HEAD --oneline`) for the reviewers.
+
+Stop on an invalid ref, or when the scoped diff is empty and there are no relevant untracked files.
 
 ### 2. Identify the spec source
 
 Look for the originating spec, in this order:
 
-1. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.), fetched via the workflow in the tracker doc.
-2. A path the user passed as an argument.
+1. The spec or ticket supplied by the user or invoking skill, or the requirements already agreed in the conversation.
+2. Issue references in the commit messages (`#123`, `Closes #45`, etc.), fetched the way `docs/agents/issue-tracker.md` describes when that guide exists.
 3. A spec file under `docs/`, `specs/`, or `.scratch/` matching the branch name or feature.
-4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
+4. If nothing is found, ask the user where the spec is. If there isn't one, skip the Spec sub-agent and report "no spec available".
 
 ### 3. Identify the standards sources
 
-Search the repo for every file that documents how code should be written. When `CODING_STANDARDS.md` or `CONTRIBUTING.md` exists, it must be on the list.
+Everything in the repo that says how code here should be written:
 
-On top of whatever the repo documents, the Standards axis always carries the **smell baseline** below: a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when a repo documents nothing. Two rules bind it:
+- Root and scoped `AGENTS.md` files, `CONTRIBUTING.md`, and any coding-standards document
+- ADRs in the area the diff touches (`docs/adr/` and context-scoped ADR directories): a change that contradicts one is a finding
+- `GLOSSARY.md`: a domain concept named with a synonym the glossary avoids is a finding
+- Linter, formatter, and type-checker configuration, to know what tooling already enforces so the review can skip it
+
+On top of what the repo documents, the Standards axis carries the **smell baseline** below: a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when a repo documents nothing. Two rules bind it:
 
 - **The repo overrides.** A documented repo standard always wins; where it endorses something the baseline would flag, suppress the smell.
-- **Always a judgement call.** Each smell is a labelled heuristic ("possible Feature Envy"), never a hard violation. Like any standard here, skip anything tooling already enforces.
+- **Always a judgement call.** Each smell is a labelled heuristic ("possible Feature Envy"), never a hard violation.
 
-Each smell reads *what it is* → *how to fix*; match it against the diff:
+Each smell reads *what it is* → *how to fix*:
 
 - **Mysterious Name**: a function, variable, or type whose name doesn't reveal what it does or holds. → rename it; if no honest name comes, the design's murky.
 - **Duplicated Code**: the same logic shape appears in more than one hunk or file in the change. → extract the shared shape, call it from both.
@@ -54,21 +64,19 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 - **Middle Man**: a class or function that mostly just delegates onward. → cut it, call the real target direct.
 - **Refused Bequest**: a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
 
-### 4. Spawn both sub-agents in parallel
+### 4. Spawn the sub-agents in parallel
 
-Issue both sub-agent calls together, in the foreground, and aggregate the reports they return.
+Every prompt carries the diff command, commit list, scope, and relevant untracked-file paths from step 1, and this output rule: "Report findings only: no praise, no summary of the diff. For each finding give the file and hunk, what is wrong, why it matters, and the fix you would make. Mark each finding **hard** or **judgement call**. If you find nothing, say so."
 
-**Standards sub-agent prompt** should include:
+**Standards sub-agent**, additionally:
 
-- The full diff command and commit list.
-- The list of standards-source files you found in step 3, **plus the smell baseline from step 3** pasted in full (the sub-agent has no other access to it).
-- The brief: "Report, per file/hunk where relevant, (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls: documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
+- The standards sources from step 3, plus the smell baseline pasted in full (the sub-agent has no other access to it).
+- The brief: "Report (a) every place the diff violates a documented standard, ADR, or glossary term, citing the file and the rule; and (b) any baseline smell, naming it and quoting the hunk. Documented breaches can be hard; baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces."
 
-**Spec sub-agent prompt** should include:
+**Spec sub-agent**, additionally:
 
-- The diff command and commit list.
-- The path or fetched contents of the spec.
-- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words."
+- The spec path or contents, or the agreed requirements, from step 2.
+- The brief: "Report (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that are implemented but don't do what the spec describes. Quote the spec line for each finding."
 
 **Correctness sub-agent**, additionally:
 
