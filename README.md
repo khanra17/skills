@@ -12,34 +12,28 @@ These skills are small, easy to adapt, and composable. They are written for curr
 
 ## Installation
 
-## Installation (30-second setup)
-
-A plugin updates itself. [skills.sh](https://skills.sh/mattpocock/skills) copies editable files into your project, and you update them by hand. Pick one per agent, because installing both gives you every skill twice.
+Use [skills.sh](https://skills.sh/khanra17/skills) with pi, Codex, Antigravity, or another supported agent. The installer lets you choose which skills to install and for which agents.
 
 ### 1. Get the skills
 
-<details>
-<summary><strong>Claude Code</strong></summary>
+**Productivity: install globally.**
 
 ```bash
-claude plugin install mattpocock-skills@claude-plugins-official
+npx skills@latest add khanra17/skills --global --skill grill-me grilling handoff reflect teach unslop wait-what writing-for-agents
 ```
 
-Updates itself by default.
+For a project-specific copy, run the same command from the project without `--global`.
 
-</details>
-
-<details>
-<summary><strong>Codex</strong></summary>
+**Engineering: install per project.** Run these from the project directory:
 
 ```bash
-codex plugin marketplace add mattpocock/skills
-codex plugin add mattpocock-skills@mattpocock
+npx skills@latest add khanra17/skills/skills/engineering --skill '*'
+npx skills@latest add khanra17/skills --skill grilling unslop writing-for-agents
 ```
 
-Updates itself at startup.
+The first command installs the engineering set, including `setup-khanra17-skills` and `triage`. The second installs the productivity skills the engineering flows call: `grilling` for interviews, `unslop` for human-facing writing, and `writing-for-agents` for project instructions. With both, the engineering flows work without a global installation.
 
-</details>
+The installed files are yours to edit. Update when you want with `npx skills update`.
 
 <details>
 <summary><strong>GitHub Copilot</strong> (CLI and VS Code)</summary>
