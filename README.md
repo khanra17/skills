@@ -33,6 +33,14 @@ npx skills@latest add khanra17/skills --skill grilling unslop writing-for-agents
 
 The first command installs the engineering set, including `setup-khanra17-skills` and `triage`. The second installs the productivity skills the engineering flows call: `grilling` for interviews, `unslop` for human-facing writing, and `writing-for-agents` for project instructions. With both, the engineering flows work without a global installation.
 
+**Claude Code: optional.** One skill is specific to Anthropic's models, so it is installed on its own and only when you work in Claude Code:
+
+```bash
+npx skills@latest add khanra17/skills --global --skill subagent-models
+```
+
+Nothing else refers to it. Remove it with `npx skills remove subagent-models` when you move to another harness.
+
 The installed files are yours to edit. Update when you want with `npx skills update`.
 
 ### 2. Run `/setup-khanra17-skills`
@@ -126,6 +134,27 @@ Two links are left out of the picture to keep it readable:
 | `writing-for-agents` | Write skills and `AGENTS.md` |
 
 Every skill is linked in the [Reference](#reference) below.
+
+## Claude Code: model picks
+
+Which model and effort to run your own session on, per step. This applies to Anthropic's models only. Sub-agents are picked for you by [`subagent-models`](./skills/claude-code/subagent-models/SKILL.md).
+
+| Step | Model | Effort |
+| --- | --- | --- |
+| `/grill-me`, `/grill-with-docs`, `/wayfinder` | Fable | medium |
+| `/to-spec`, `/to-tickets`, and a `/prototype` built in the planning session | the model that session is already on | same |
+| `/prototype` in its own session: what should it look like, or is this the right shape for the model | Fable | medium |
+| `/prototype` in its own session: does the logic handle the awkward cases | Opus | high |
+| `/implement`, `/tdd`, `/code-review`, `/diagnosing-bugs` | Opus | high |
+| `/improve-codebase-architecture`, `/research` | Opus | high |
+| `/triage`, `/setup-khanra17-skills`, `/teach`, `/reflect`, small chores | Opus | medium |
+| An exhaustive audit of a high-risk change | Opus | xhigh |
+| A thread going in circles, or a ship-or-hold verdict on finished work | Fable | medium |
+| The hardest problem, or one Opus at high fell short on | Fable | high |
+
+These pairs are the whole menu. The split behind them: Opus for work a test or a source can prove right, Fable for design, judgment, and variety.
+
+When a pick falls short, first give the agent a way to check its own work. Then raise effort one step, stopping at high. Then move up a model at medium.
 
 ## Why These Skills Exist
 
@@ -267,3 +296,11 @@ General workflow tools, not code-specific.
 - **[grilling](./skills/productivity/grilling/SKILL.md)**: The interview primitive behind `grill-me`, `grill-with-docs`, `triage`, `wayfinder` and `improve-codebase-architecture`: rounds of questions in dependency order, each with a recommended answer. [Docs](./docs/productivity/grilling.md)
 - **[unslop](./skills/productivity/unslop/SKILL.md)**: Plain, natural writing for human-facing prose, and smallest-useful-edit rewrites of existing text. [Docs](./docs/productivity/unslop.md)
 - **[writing-for-agents](./skills/productivity/writing-for-agents/SKILL.md)**: The reference for documents agents consume: skills, `AGENTS.md`, and any doc reached by a pointer. [Docs](./docs/productivity/writing-for-agents.md)
+
+### Claude Code
+
+Specific to Anthropic's models. Optional, and no other skill depends on it.
+
+**Model-invoked**
+
+- **[subagent-models](./skills/claude-code/subagent-models/SKILL.md)**: Pick the Claude model and reasoning effort for each sub-agent by the kind of task it is doing. [Docs](./docs/claude-code/subagent-models.md)
